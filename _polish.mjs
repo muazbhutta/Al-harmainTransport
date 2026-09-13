@@ -431,6 +431,19 @@ export function markCurrent(html, route) {
       href === route ? `${m} aria-current="page"` : m));
 }
 
+/**
+ * A book icon beside the menu button, linking to the Ziyarat guide.
+ *
+ * Shown where the menu button is (under 992px); on desktop the guide already
+ * has its own item in the menu.
+ */
+export function addGuideIcon(html) {
+  return html.replace(/<button class="navbar-toggler"/,
+    '<a class="nav-guide-btn d-lg-none" href="/ziyarat-guide" aria-label="Ziyarat Guide" title="Ziyarat Guide">'
+    + '<i class="fas fa-book" aria-hidden="true"></i></a>'
+    + '<button class="navbar-toggler"');
+}
+
 /* ------------------------------------------------------- garbled characters */
 
 /**
@@ -673,7 +686,7 @@ async function main() {
     const data = JSON.parse(await readFile(join('content', f), 'utf8'));
     if (f === '_chrome.json') {
       for (const k of Object.keys(data)) data[k] = transformHtml(fixMojibake(data[k], `chrome.${k}`), `chrome.${k}`);
-      data.nav = fixLogo(markCurrent(data.nav, '/ziyarat-guide')); // the chrome is only used by the guide
+      data.nav = addGuideIcon(fixLogo(markCurrent(data.nav, '/ziyarat-guide'))); // the chrome is only used by the guide
       // WhatsApp links are marked data-wa; SiteChrome re-points them at each guide page
       for (const k of Object.keys(data)) data[k] = whatsappIn(data[k], '/ziyarat-guide');
     } else if (typeof data.body === 'string') {
@@ -682,7 +695,7 @@ async function main() {
       for (const k of ['title', 'description', 'keywords']) {
         if (typeof data[k] === 'string') data[k] = decodeEntities(fixMojibake(data[k], `${data.route} ${k}`));
       }
-      data.body = fixLogo(markCurrent(transformHtml(fixMojibake(data.body, data.route), data.route), data.route));
+      data.body = addGuideIcon(fixLogo(markCurrent(transformHtml(fixMojibake(data.body, data.route), data.route), data.route)));
       data.body = vehicleButton(whatsappIn(data.body, data.route), data.route);
       if (data.route === '/') data.body = heroEdits(data.body);
     }

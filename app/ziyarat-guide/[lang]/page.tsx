@@ -88,7 +88,11 @@ export default async function ZiyaratGuideLangPage({ params }: Params) {
     jeddah: s(idx, 'jeddah', 'Jeddah'),
   };
 
-  const toc = guide.chapters.map((c) => ({ id: c.id, title: c.title }));
+  // The bar shows the chapter's own name: "Chapter 3 · Hajj" becomes "Hajj",
+  // and a trailing " - Sacred Sites" is dropped. Every language separates the
+  // chapter label with the same "·", so this holds in all 11.
+  const shortTitle = (t: string) => t.split('·').pop()!.split(' - ')[0].trim();
+  const toc = guide.chapters.map((c) => ({ id: c.id, title: shortTitle(c.title) }));
 
   return (
     <div className="guide" dir={meta.dir} lang={lang}>
@@ -160,14 +164,13 @@ export default async function ZiyaratGuideLangPage({ params }: Params) {
           </div>
         </section>
 
-        {/* 3 + 4 — contents and chapters */}
+        {/* 3 — the chapter bar, sticky under the site header */}
+        <TableOfContents items={toc} label={s(g, 'onThisPage', 'On this page')} />
+
+        {/* 4 — the chapters */}
         <section className="guide-section" style={{ paddingTop: 0 }}>
           <div className="guide-container">
-            <div className="guide-grid">
-              <aside>
-                <TableOfContents items={toc} label={s(g, 'onThisPage', 'On this page')} />
-              </aside>
-
+            <div className="guide-chapters">
               <div>
                 {guide.chapters.map((chapter, n) => {
                   // Which h3 blocks in this chapter are known ziyarat locations.

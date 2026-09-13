@@ -27,6 +27,18 @@ for (const f of (await readdir('_reference')).filter((f) => f.endsWith('.html'))
 }
 for (const f of (await readdir('public/assets/js')).filter((f) => f.endsWith('.js'))) {
   scan(await readFile(`public/assets/js/${f}`, 'utf8'));
+
+// our own source too, so an icon this project adds is kept as well
+const walkSource = async (dir) => {
+  for (const e of await readdir(dir, { withFileTypes: true })) {
+    const p = `${dir}/${e.name}`;
+    if (e.isDirectory()) await walkSource(p);
+    else if (/\.(tsx?|css|mjs)$/.test(e.name)) scan(await readFile(p, "utf8"));
+  }
+};
+await walkSource('app');
+await walkSource('components');
+scan(await readFile('_polish.mjs', 'utf8'));
 }
 
 /* ---- 2. split the stylesheet into top-level rules ---- */

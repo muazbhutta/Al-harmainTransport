@@ -63,6 +63,12 @@
 @media (max-width: 767.98px) { :root { --text-5xl: 30px; --text-4xl: 30px; --text-3xl: 24px; } }
 @media (max-width: 575.98px) { :root { --text-4xl: 24px; --h3: var(--text-xl); } }
 
+/* The original stylesheet sets "contain: layout style" on <body>. That makes
+   the body a containing block, so the header's "position: fixed" behaves like
+   absolute and the header — and anything sticky under it — scrolls away.
+   Nothing here needs layout containment. */
+body { contain: none !important; }
+
 body { font-family: 'Poppins', sans-serif; font-size: var(--text-base); line-height: var(--lh-body); }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -202,6 +208,33 @@ nav.navbar-custom .navbar-nav .btn-success {
 }
 nav.navbar-custom .navbar-nav .btn-success i { font-size: var(--text-base) !important; }
 
+/* quick link to the Ziyarat guide, beside the menu button on phones and
+   tablets (on desktop the guide has its own item in the menu) */
+nav.navbar-custom .nav-guide-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; margin-inline-end: 8px;
+  border: 1px solid var(--clr-border); border-radius: 8px;
+  color: var(--clr-accent) !important;
+  font-size: var(--text-lg); text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+nav.navbar-custom .nav-guide-btn:hover,
+nav.navbar-custom .nav-guide-btn:focus-visible {
+  background: rgba(var(--clr-accent-rgb), 0.12);
+  border-color: var(--clr-accent);
+}
+
+
+/* phones: the logo, the guide icon and the menu button must stay on one row */
+@media (max-width: 575.98px) {
+  nav.navbar-custom .navbar-brand { margin-right: 8px; gap: 8px !important; }
+  nav.navbar-custom .navbar-brand img { width: 40px !important; height: 40px !important; }
+  nav.navbar-custom .navbar-brand .d-flex > span:first-child { font-size: var(--text-base) !important; }
+  nav.navbar-custom .navbar-brand .d-flex > span:last-child { font-size: 10px !important; letter-spacing: 1.5px !important; }
+  nav.navbar-custom .nav-guide-btn { width: 40px; height: 40px; margin-inline-end: 6px; }
+  nav.navbar-custom .navbar-toggler { width: 40px !important; height: 40px !important; }
+}
+
 /* the section you are in */
 nav.navbar-custom .nav-link.active { color: var(--clr-accent) !important; }
 nav.navbar-custom .dropdown-item[aria-current="page"] { color: var(--clr-accent) !important; }
@@ -301,4 +334,11 @@ nav.navbar-custom .dropdown-item[aria-current="page"] { color: var(--clr-accent)
   nav.navbar-custom .navbar-nav .nav-link { padding: 10px 12px !important; }
   nav.navbar-custom .navbar-nav.ms-auto { margin-top: 8px !important; }
   nav.navbar-custom .navbar-nav .btn-success { width: 100%; height: 44px; justify-content: center; }
+}
+
+/* ---------------------------------------------- phone header height (last)
+   On phones the header is 65px, not 72px. This has to come after the :root
+   block in the heroes section, or that later declaration wins. */
+@media (max-width: 575.98px) {
+  :root { --nav-h: 65px; }
 }
