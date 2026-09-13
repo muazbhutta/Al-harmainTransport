@@ -1,0 +1,123 @@
+{
+  "guide": {
+    "eyebrow": "Öne Çıkan Rehber",
+    "title": "Tam Ziyaret Rehberi",
+    "subtitle": "Kutsal mekânlar için zengin ve saygılı bir rehber - Mekke, Umre ve Hac adımları, mübarek mekânlar, Taif, Medine ve Bedir - her dilde mevcut, okumak ve indirmek ücretsiz.",
+    "intro": "İster ilk ziyaretiniz olsun ister onuncu, bu rehber sizi kutsal mekânlar ve tarihleri boyunca gezdirir; böylece ziyaretiniz anlamlı ve bilgili olur. Başlamak için aşağıdan dilinizi seçin.",
+    "chooseLanguage": "Kendi dilinizde okuyun",
+    "startReading": "Rehberi oku",
+    "availableIn": "Desteklenen tüm dillerde mevcut",
+    "download": "PDF İndir",
+    "print": "Yazdır / PDF Kaydet",
+    "onThisPage": "Bu sayfada",
+    "chaptersTitle": "İçindekiler",
+    "chapters": {
+      "makkah": {
+        "title": "Mekke",
+        "desc": "Kutsal şehre, Kâbe'ye ve Mescid-i Haram'a giriş."
+      },
+      "umrah": {
+        "title": "Umre, Adım Adım",
+        "desc": "Umre menasiki açıkça, sırasıyla açıklanmış."
+      },
+      "hajj": {
+        "title": "Hac, Adım Adım",
+        "desc": "Haccın gün gün anlatımı."
+      },
+      "sacredSites": {
+        "title": "Mekke'nin Kutsal Mekânları",
+        "desc": "Ziyaret edilecek mübarek ve tarihi yerler."
+      },
+      "taif": {
+        "title": "Taif",
+        "desc": "Dağ şehri ve Peygamber ﷺ'in hayatındaki yeri."
+      },
+      "madinah": {
+        "title": "Medine",
+        "desc": "Peygamber ﷺ'in şehri, Mescid-i Nebevi ve ziyareti."
+      },
+      "badr": {
+        "title": "Bedir",
+        "desc": "İlk büyük savaşın yeri ve şehitleri."
+      },
+      "family": {
+        "title": "Peygamber ﷺ'in Ailesi",
+        "desc": "Peygamber ﷺ'in eşleri ve çocukları hakkında ek."
+      }
+    },
+    "verseLabel": "Kur'an",
+    "hadithLabel": "Hadis",
+    "sourceLabel": "Kaynak",
+    "translationLabel": "Çeviri",
+    "noteTitle": "İçerik hakkında not",
+    "contentPending": "Bu bölümün tam metni - Kur'an ayetleri, hadisler ve kaynakları dâhil - doğruluğu incelenip teyit edildikten sonra burada yayımlanacaktır. Her kelimenin doğruluğuna büyük özen gösteriyoruz. Lütfen kısa süre sonra tekrar bakın veya içeriği incelemeye yardımcı olmak isterseniz bize ulaşın.",
+    "machineNotice": "Bu çeviri, âlim incelemesini bekleyen makine destekli bir taslaktır. Arapça Kur’an ayetleri ve hadisler değiştirilmeden korunmuştur; bazı isimler henüz yerelleştirilmemiş olabilir.",
+    "verifyNote": "Tüm Kur'an ayetleri ve hadisler yayımlanmadan önce güvenilir kaynaklarla teyit edilir."
+  },
+  "ziyaratLocation": {
+    "title": "Konum",
+    "cityLabel": "Şehir",
+    "pdfCoordinates": "Koordinatlar",
+    "scanForDirections": "Yol tarifi için tarayın",
+    "distanceLabel": "Mesafe",
+    "driveLabel": "Yolculuk süresi",
+    "directions": "Yol Tarifi Al",
+    "appleMaps": "Apple Haritalar",
+    "book": "Bu Ziyareti ayırt",
+    "fromHaram": "Mescid-i Haram'dan",
+    "fromNabawi": "Mescid-i Nebevi'den",
+    "approx": "yaklaşık",
+    "km": "km",
+    "min": "dk",
+    "bestTimeLabel": "En iyi zaman",
+    "waMessage": "Esselamu aleyküm, {place} için bir Ziyaret gezisi ayırtmak istiyorum.",
+    "bestTime": {
+      "earlyMorning": "Sabah erken",
+      "morning": "Sabah",
+      "afterFajr": "Sabah namazından sonra"
+    },
+    "city": {
+      "makkah": "Mekke",
+      "madinah": "Medine",
+      "taif": "Taif",
+      "jeddah": "Cidde"
+    }
+  },
+  "ziyaratIndex": {
+    "title": "Tüm Ziyaret Noktaları",
+    "subtitle": "Bu rehberdeki tüm yerler, şehirlere göre gruplanmış. Harita uygulamanızda açmak için Yol Tarifi'ne dokunun.",
+    "fullRoute": "Tüm rotayı Google Haritalar'da aç"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "pickDrop": "Rezervasyon",
+    "ziyaratGuide": "Ziyaret Rehberi",
+    "about": "Hakkımızda",
+    "faq": "SSS",
+    "contact": "İletişim",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Şartlar"
+  },
+  "common": {
+    "bookNow": "WhatsApp'tan Hemen Rezervasyon",
+    "callNow": "Hemen Ara",
+    "whatsapp": "WhatsApp",
+    "licensed": "Lisanslı",
+    "licenseNo": "Lisans No.",
+    "unifiedNo": "Birleşik Ulusal No.",
+    "getQuote": "Ücretsiz Teklif Alın",
+    "chatWhatsapp": "WhatsApp'tan Yazın",
+    "skipToContent": "İçeriğe geç",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat",
+    "language": "Dil",
+    "chooseLanguage": "Dilinizi seçin",
+    "downloadPdf": "PDF İndir",
+    "print": "Yazdır / PDF Kaydet",
+    "onThisPage": "Bu sayfada",
+    "coverageShort": "Mekke · Medine · Cidde · Taif",
+    "support247": "7/24 Destek",
+    "backToTop": "Başa dön",
+    "home": "Ana Sayfa"
+  }
+}

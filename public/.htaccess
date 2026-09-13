@@ -1,0 +1,11 @@
+# Apache / LiteSpeed (e.g. Hostinger). A static export cannot set response
+# headers itself, so the host has to: serve the Ziyarat guide PDFs as
+# downloads, under their own file name, with the right type.
+AddType application/pdf .pdf
+
+<IfModule mod_headers.c>
+  <FilesMatch "^ziyarat-guide-[A-Za-z-]+\.pdf$">
+    Header set Content-Disposition "attachment"
+    Header set X-Content-Type-Options "nosniff"
+  </FilesMatch>
+</IfModule>

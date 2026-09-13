@@ -1,0 +1,123 @@
+{
+  "guide": {
+    "eyebrow": "Khususi Guide",
+    "title": "Mukammal Ziyarat Guide",
+    "subtitle": "Muqaddas maqamat ke liye ek bharpoor, baadab guide - Makkah, Umrah o Hajj ke marahil, mubarak maqamat, Taif, Madinah aur Badr - har zaban mein dastyaab, muft parhne aur download ke liye.",
+    "intro": "Chahe ye aapki pehli Ziyarat ho ya daswin, ye guide aap ko muqaddas maqamat aur unki tareekh se roshnaas karati hai taake aapki Ziyarat baamani aur baailm ho. Shuru karne ke liye neeche apni zaban muntakhib karein.",
+    "chooseLanguage": "Apni zaban mein parhein",
+    "startReading": "Guide Parhein",
+    "availableIn": "Tamam supported zabanon mein dastyaab",
+    "download": "PDF Download",
+    "print": "Print / PDF Mehfooz Karein",
+    "onThisPage": "Is safhe par",
+    "chaptersTitle": "Kya shamil hai",
+    "chapters": {
+      "makkah": {
+        "title": "Makkah",
+        "desc": "Muqaddas sheher, Ka'bah aur Masjid al-Haram ka taaruf."
+      },
+      "umrah": {
+        "title": "Umrah, Marhala War",
+        "desc": "Umrah ke manasik waazeh tor par, tarteeb se."
+      },
+      "hajj": {
+        "title": "Hajj, Marhala War",
+        "desc": "Hajj ki roz-ba-roz rehnumai."
+      },
+      "sacredSites": {
+        "title": "Makkah ke Muqaddas Maqamat",
+        "desc": "Ziyarat ke liye mubarak aur tareekhi maqamat."
+      },
+      "taif": {
+        "title": "Taif",
+        "desc": "Paharri sheher aur Nabi ﷺ ki zindagi mein uska maqam."
+      },
+      "madinah": {
+        "title": "Madinah",
+        "desc": "Nabi ﷺ ka sheher, Masjid an-Nabawi aur uski Ziyarat."
+      },
+      "badr": {
+        "title": "Badr",
+        "desc": "Pehli barri jang ka maqam aur uske shuhada."
+      },
+      "family": {
+        "title": "Nabi ﷺ ka Khandan",
+        "desc": "Nabi ﷺ ki azwaj o aulad ke bare mein zameema."
+      }
+    },
+    "verseLabel": "Qur'an",
+    "hadithLabel": "Hadith",
+    "sourceLabel": "Maakhaz",
+    "translationLabel": "Tarjuma",
+    "noteTitle": "Content ke bare mein note",
+    "contentPending": "Is baab ka mukammal matn - bashumool Qurani ayaat, ahadith aur unke maakhaz - tasdeeq aur janch ke baad yahan shaya kiya jayega. Hum har lafz ki durustagi ka bohat khayal rakhte hain. Barah-e-karam jald dobara aayein, ya agar aap content ki janch mein madad karna chahein to rabta karein.",
+    "machineNotice": "Ye tarjuma machine ki madad se tayyar karda draft hai, ilmi nazar-sani ke muntazir. Arabi ayaat o ahadith bighair tabdeeli ke hain; baaz naam abhi local zaban mein muntaqil nahi hue.",
+    "verifyNote": "Tamam Qurani ayaat aur ahadith ishaat se pehle mustanad maakhaz se tasdeeq ki jati hain."
+  },
+  "ziyaratLocation": {
+    "title": "Maqam",
+    "cityLabel": "Shehar",
+    "pdfCoordinates": "Coordinates",
+    "scanForDirections": "Raaste ke liye scan karein",
+    "distanceLabel": "Faasla",
+    "driveLabel": "Safar ka waqt",
+    "directions": "Raasta dekhein",
+    "appleMaps": "Apple Maps",
+    "book": "Yeh Ziyarat book karein",
+    "fromHaram": "Masjid al-Haram se",
+    "fromNabawi": "Masjid an-Nabawi se",
+    "approx": "taqreeban",
+    "km": "km",
+    "min": "min",
+    "bestTimeLabel": "Behtareen waqt",
+    "waMessage": "Assalamu Alaikum, main {place} ki Ziyarat ka safar book karna chahta hoon.",
+    "bestTime": {
+      "earlyMorning": "Subah saweray",
+      "morning": "Subah",
+      "afterFajr": "Fajr ke baad"
+    },
+    "city": {
+      "makkah": "Makkah",
+      "madinah": "Madinah",
+      "taif": "Taif",
+      "jeddah": "Jeddah"
+    }
+  },
+  "ziyaratIndex": {
+    "title": "Tamam Ziyarat ke Maqamat",
+    "subtitle": "Is guide ke tamam maqamat, shehar ke aitbaar se. Raasta dekhne ke liye Directions dabayein.",
+    "fullRoute": "Mukammal route Google Maps mein kholein"
+  },
+  "nav": {
+    "home": "Home",
+    "pickDrop": "Abhi Book Karein",
+    "ziyaratGuide": "Ziyarat Guide",
+    "about": "Hamare Bare Mein",
+    "faq": "Sawalat",
+    "contact": "Rabta",
+    "privacy": "Privacy Policy",
+    "terms": "Sharait"
+  },
+  "common": {
+    "bookNow": "WhatsApp par Abhi Book Karein",
+    "callNow": "Abhi Call Karein",
+    "whatsapp": "WhatsApp",
+    "licensed": "Licensed",
+    "licenseNo": "License No.",
+    "unifiedNo": "Muttahida Qaumi No.",
+    "getQuote": "Muft Quote Hasil Karein",
+    "chatWhatsapp": "WhatsApp par Baat Karein",
+    "skipToContent": "Content par jayen",
+    "openMenu": "Menu kholein",
+    "closeMenu": "Menu band karein",
+    "language": "Zaban",
+    "chooseLanguage": "Apni zaban muntakhib karein",
+    "downloadPdf": "PDF Download",
+    "print": "Print / PDF Mehfooz Karein",
+    "onThisPage": "Is safhe par",
+    "coverageShort": "Makkah · Madinah · Jeddah · Taif",
+    "support247": "24/7 Support",
+    "backToTop": "Upar jayen",
+    "home": "Home"
+  }
+}

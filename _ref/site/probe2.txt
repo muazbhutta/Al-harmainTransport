@@ -1,0 +1,44 @@
+const hex=(c)=>{const m=(c||'').match(/[\d.]+/g);if(!m)return c;const[r,g,b,a]=m.map(Number);
+ const h='#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+ return (a!==undefined&&a<1)?`${h} @${a}`:h};
+const bx=(el,label)=>{if(!el)return {label,absent:true};const c=getComputedStyle(el);const r=el.getBoundingClientRect();
+ return {label,tag:el.tagName.toLowerCase(),cls:(el.className||'').toString().slice(0,70),w:Math.round(r.width),
+  bg:hex(c.backgroundColor),radius:c.borderRadius,padding:c.padding,margin:c.margin,
+  borderTop:`${c.borderTopWidth} ${hex(c.borderTopColor)}`,borderLeft:`${c.borderLeftWidth} ${hex(c.borderLeftColor)}`,
+  borderInlineStart:`${c.borderInlineStartWidth} ${hex(c.borderInlineStartColor)}`,
+  shadow:c.boxShadow==='none'?'none':c.boxShadow.slice(0,100)}};
+const ty=(el,label)=>{if(!el)return {label,absent:true};const c=getComputedStyle(el);
+ return {label,size:c.fontSize,weight:c.fontWeight,lh:c.lineHeight,ls:c.letterSpacing,color:hex(c.color),
+  font:c.fontFamily.split(',')[0].replace(/["']/g,''),transform:c.textTransform}};
+const A=[...document.querySelectorAll('*')];
+const txt=e=>(e.textContent||'').trim();
+
+// scripture chip: an element whose whole text is exactly Qur'an / Hadith / Du'a
+const chip=A.find(e=>e.children.length===0 && /^(Qur.?an|Hadith|Du.?a|Talbiyah)$/i.test(txt(e)));
+const card=chip?chip.closest('figure,blockquote,div,section'):null;
+const arabic=card?[...card.querySelectorAll('*')].find(e=>e.children.length===0&&/[\u0600-\u06FF]/.test(txt(e))):null;
+const translation=card?[...card.querySelectorAll('p,blockquote')].find(e=>!/[\u0600-\u06FF]/.test(txt(e))&&txt(e).length>40):null;
+const source=card?[...card.querySelectorAll('*')].filter(e=>e.children.length===0&&txt(e).length<90&&txt(e)!==txt(chip)).pop():null;
+
+// hero band
+const h1=document.querySelector('h1');
+const hero=h1?h1.closest('section,header,div'):null;
+
+// eyebrow above chapter titles
+const h2=document.querySelector('h2');
+const eyebrow=h2?h2.previousElementSibling:null;
+
+// TOC
+const toc=A.find(e=>/^On this page/i.test(txt(e))&&e.children.length<8);
+
+JSON.stringify({
+ heroBand:bx(hero,'hero'), h1:ty(h1,'h1'),
+ eyebrow:{...ty(eyebrow,'eyebrow'),text:eyebrow?txt(eyebrow).slice(0,30):null},
+ h2:ty(h2,'h2'),
+ scriptureCard:bx(card,'scriptureCard'),
+ chip:{...ty(chip,'chip'),...bx(chip,'chipBox')},
+ arabic:ty(arabic,'arabic'),
+ translation:ty(translation,'translation'),
+ source:{...ty(source,'source'),text:source?txt(source).slice(0,40):null},
+ toc:bx(toc?toc.closest('nav,aside,div'):null,'toc'),
+},null,1);

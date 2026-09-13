@@ -1,0 +1,664 @@
+/**
+ * AL HARMAIN UMRAH TRANSPORT - AI Agent Assistant Widget
+ * Floating Right-Side AI Button & Chat Interface
+ */
+
+(function () {
+    // 1. Inject Styles
+    const style = document.createElement('style');
+    style.id = 'ai-agent-styles';
+    style.textContent = `
+        /* Right Side AI Floating Button */
+        #ai-agent-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clr-success) 0%, var(--clr-success-hover) 100%);
+            border: 2px solid var(--clr-heading);
+            color: var(--clr-heading);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10050;
+            box-shadow: 0 8px 25px rgba(var(--clr-success-rgb), 0.5), 0 0 15px rgba(var(--clr-success-rgb), 0.4);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+            padding: 0;
+        }
+
+        #ai-agent-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px rgba(var(--clr-success-rgb), 0.75), 0 0 25px rgba(var(--clr-success-rgb), 0.6);
+        }
+
+        #ai-agent-btn .ai-icon {
+            font-size: var(--text-3xl);
+            color: var(--clr-heading);
+            transition: transform 0.3s ease;
+        }
+
+        #ai-agent-btn:hover .ai-icon {
+            transform: scale(1.15);
+        }
+
+        /* Pulse Ring */
+        #ai-agent-btn::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            border: 2px solid rgba(var(--clr-accent-rgb), 0.6);
+            animation: aiPulse 2s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes aiPulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 0; }
+            100% { transform: scale(0.95); opacity: 0; }
+        }
+
+        /* AI Notification Badge */
+        #ai-agent-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: var(--clr-success);
+            color: var(--clr-heading);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            padding: 3px 7px;
+            border-radius: 10px;
+            border: 2px solid var(--clr-bg);
+            box-shadow: 0 2px 5px rgba(var(--clr-bg-rgb), 0.5);
+            letter-spacing: 0.5px;
+            animation: bounceBadge 2s infinite;
+        }
+
+        @keyframes bounceBadge {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* Hide Cart Button */
+        #cart-button, #add-to-cart-button {
+            display: none !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+        }
+
+        /* AI Chat Window Modal */
+        #ai-chat-window {
+            position: fixed;
+            bottom: 98px;
+            right: 25px;
+            width: 380px;
+            max-width: calc(100vw - 30px);
+            height: 560px;
+            max-height: calc(100vh - 120px);
+            background: rgba(var(--clr-surface-rgb), 0.96);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(var(--clr-accent-rgb), 0.5);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(var(--clr-bg-rgb), 0.7), 0 0 30px rgba(var(--clr-accent-rgb), 0.2);
+            z-index: 10060;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #ai-chat-window.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        /* Chat Header */
+        .ai-chat-header {
+            background: linear-gradient(135deg, var(--clr-surface-raised) 0%, var(--clr-surface) 100%);
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(var(--clr-accent-rgb), 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--clr-on-accent);
+            font-size: var(--text-xl);
+            box-shadow: 0 2px 10px rgba(var(--clr-accent-rgb), 0.4);
+            position: relative;
+        }
+
+        .ai-online-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 11px;
+            height: 11px;
+            background: var(--clr-success);
+            border: 2px solid var(--clr-bg);
+            border-radius: 50%;
+        }
+
+        .ai-title-box h5 {
+            margin: 0;
+            font-size: var(--text-base);
+            font-weight: 700;
+            color: var(--clr-heading);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ai-title-box small {
+            font-size: var(--text-xs);
+            color: var(--clr-accent);
+            display: block;
+            font-weight: 500;
+        }
+
+        .ai-close-btn {
+            background: rgba(var(--clr-brand-tint-rgb), 0.1);
+            border: none;
+            color: var(--clr-text);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: var(--text-base);
+        }
+
+        .ai-close-btn:hover {
+            background: rgba(var(--clr-error-rgb), 0.3);
+            color: var(--clr-error);
+        }
+
+        /* Chat Body */
+        .ai-chat-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            scroll-behavior: smooth;
+        }
+
+        .ai-chat-body::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .ai-chat-body::-webkit-scrollbar-thumb {
+            background: rgba(var(--clr-accent-rgb), 0.3);
+            border-radius: 4px;
+        }
+
+        /* Messages */
+        .ai-msg {
+            max-width: 85%;
+            padding: 11px 15px;
+            border-radius: 16px;
+            font-size: var(--text-sm);
+            line-height: 1.5;
+            word-wrap: break-word;
+            animation: msgFadeIn 0.3s ease;
+        }
+
+        @keyframes msgFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-msg.bot {
+            align-self: flex-start;
+            background: rgba(var(--clr-surface-raised-rgb), 0.9);
+            border: 1px solid rgba(var(--clr-accent-rgb), 0.25);
+            color: var(--clr-heading);
+            border-top-left-radius: 4px;
+        }
+
+        .ai-msg.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent));
+            color: var(--clr-on-accent);
+            font-weight: 600;
+            border-top-right-radius: 4px;
+            box-shadow: 0 4px 12px rgba(var(--clr-accent-rgb), 0.3);
+        }
+
+        /* Quick Suggestions */
+        .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .ai-chip {
+            background: rgba(var(--clr-accent-rgb), 0.12);
+            border: 1px solid rgba(var(--clr-accent-rgb), 0.4);
+            color: var(--clr-accent);
+            font-size: var(--text-xs);
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ai-chip:hover {
+            background: var(--clr-accent);
+            color: var(--clr-on-accent);
+            transform: translateY(-1px);
+        }
+
+        /* Typing Indicator */
+        .ai-typing {
+            align-self: flex-start;
+            background: rgba(var(--clr-surface-raised-rgb), 0.9);
+            border: 1px solid rgba(var(--clr-accent-rgb), 0.25);
+            padding: 10px 16px;
+            border-radius: 16px;
+            border-top-left-radius: 4px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ai-typing span {
+            width: 6px;
+            height: 6px;
+            background: var(--clr-accent);
+            border-radius: 50%;
+            animation: typingDot 1.4s infinite ease-in-out both;
+        }
+
+        .ai-typing span:nth-child(1) { animation-delay: -0.32s; }
+        .ai-typing span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingDot {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Chat Footer & Input */
+        .ai-chat-footer {
+            padding: 12px;
+            background: var(--clr-surface);
+            border-top: 1px solid rgba(var(--clr-accent-rgb), 0.25);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .ai-input {
+            flex: 1;
+            background: rgba(var(--clr-surface-raised-rgb), 0.8) !important;
+            border: 1px solid rgba(var(--clr-accent-rgb), 0.3) !important;
+            border-radius: 25px !important;
+            padding: 9px 16px !important;
+            color: var(--clr-heading) !important;
+            font-size: var(--text-sm) !important;
+            outline: none !important;
+        }
+
+        .ai-input::placeholder {
+            color: var(--clr-muted) !important;
+        }
+
+        .ai-send-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent));
+            border: none;
+            color: var(--clr-on-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: var(--text-sm);
+            box-shadow: 0 3px 10px rgba(var(--clr-accent-rgb), 0.4);
+        }
+
+        .ai-send-btn:hover {
+            transform: scale(1.08);
+            background: var(--clr-brand-tint);
+            color: var(--clr-accent);
+        }
+
+        .ai-bot-link {
+            display: inline-block;
+            margin-top: 8px;
+            background: var(--clr-success);
+            color: var(--clr-heading) !important;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-decoration: none !important;
+            font-size: var(--text-xs);
+            box-shadow: 0 3px 8px rgba(var(--clr-success-rgb), 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .ai-bot-link:hover {
+            background: var(--clr-success);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 480px) {
+            #ai-chat-window {
+                right: 12px;
+                bottom: 85px;
+                width: calc(100vw - 24px);
+                height: 480px;
+            }
+            #ai-agent-btn {
+                bottom: 18px;
+                right: 18px;
+                width: 56px;
+                height: 56px;
+            }
+            #cart-button {
+                bottom: 86px !important;
+                right: 18px !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // 2. Inject DOM Elements
+    const btnHtml = `
+        <button id="ai-agent-btn" aria-label="WhatsApp AI Assistant Chat">
+            <i class="fab fa-whatsapp ai-icon"></i>
+            <span id="ai-agent-badge">AI 24/7</span>
+        </button>
+    `;
+
+    const chatModalHtml = `
+        <div id="ai-chat-window">
+            <div class="ai-chat-header">
+                <div class="ai-header-info">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                        <span class="ai-online-dot"></span>
+                    </div>
+                    <div class="ai-title-box">
+                        <h5>Al Harmain AI Agent <i class="fas fa-check-circle" style="color:var(--clr-success); font-size:var(--text-xs);"></i></h5>
+                        <small>Online | Instant Umrah Transport Assistant</small>
+                    </div>
+                </div>
+                <button class="ai-close-btn" id="ai-close-chat" aria-label="Close Chat">&times;</button>
+            </div>
+
+            <div class="ai-chat-body" id="ai-chat-body">
+                <div class="ai-msg bot">
+                    👋 <strong>Assalamu Alaikum!</strong> Welcome to <strong>AL HARMAIN UMRAH TRANSPORT</strong>.<br><br>
+                    I am your 24/7 AI Transport Assistant! How can I assist your holy journey today?
+                    <div class="ai-suggestions mt-2">
+                        <span class="ai-chip" data-query="Book Umrah Transport"><i class="fas fa-kaaba"></i> Book Taxi</span>
+                        <span class="ai-chip" data-query="Makkah to Madinah Rates"><i class="fas fa-route"></i> Makkah ↔ Madinah</span>
+                        <span class="ai-chip" data-query="Jeddah Airport Pick & Drop"><i class="fas fa-plane-arrival"></i> Airport Pickup</span>
+                        <span class="ai-chip" data-query="Available Vehicles & Fleet"><i class="fas fa-car-side"></i> Vehicle Fleet</span>
+                        <span class="ai-chip" data-query="WhatsApp Contact Number"><i class="fab fa-whatsapp"></i> WhatsApp Support</span>
+                    </div>
+                </div>
+                <div class="ai-typing" id="ai-typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <div class="ai-chat-footer">
+                <input type="text" id="ai-chat-input" class="ai-input" placeholder="Ask AI Agent (English / اردو)..." />
+                <button id="ai-send-btn" class="ai-send-btn" aria-label="Send Message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', btnHtml);
+    document.body.insertAdjacentHTML('beforeend', chatModalHtml);
+
+    // 3. Logic & Knowledge Base Engine
+    const aiBtn = document.getElementById('ai-agent-btn');
+    const aiChat = document.getElementById('ai-chat-window');
+    const aiClose = document.getElementById('ai-close-chat');
+    const chatBody = document.getElementById('ai-chat-body');
+    const chatInput = document.getElementById('ai-chat-input');
+    const sendBtn = document.getElementById('ai-send-btn');
+    const typingIndicator = document.getElementById('ai-typing-indicator');
+
+    // Toggle Chat Window
+    aiBtn.addEventListener('click', () => {
+        aiChat.classList.toggle('active');
+        const badge = document.getElementById('ai-agent-badge');
+        if (badge) badge.style.display = 'none';
+        if (aiChat.classList.contains('active')) {
+            chatInput.focus();
+        }
+    });
+
+    aiClose.addEventListener('click', () => {
+        aiChat.classList.remove('active');
+    });
+
+    // Handle suggestion chips
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('ai-chip') || e.target.closest('.ai-chip')) {
+            const chip = e.target.classList.contains('ai-chip') ? e.target : e.target.closest('.ai-chip');
+            const query = chip.getAttribute('data-query');
+            if (query) {
+                processUserMessage(query);
+            }
+        }
+    });
+
+    // Send Message Event
+    sendBtn.addEventListener('click', () => {
+        const text = chatInput.value.trim();
+        if (text) {
+            processUserMessage(text);
+            chatInput.value = '';
+        }
+    });
+
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const text = chatInput.value.trim();
+            if (text) {
+                processUserMessage(text);
+                chatInput.value = '';
+            }
+        }
+    });
+
+    function processUserMessage(userMsg) {
+        // Append user message
+        appendMessage(userMsg, 'user');
+
+        // Show typing indicator
+        showTyping(true);
+
+        // Generate response with artificial realistic delay
+        setTimeout(() => {
+            showTyping(false);
+            const botReply = generateAIResponse(userMsg);
+            appendMessage(botReply, 'bot');
+        }, 700);
+    }
+
+    function appendMessage(htmlContent, type) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `ai-msg ${type}`;
+        msgDiv.innerHTML = htmlContent;
+        chatBody.insertBefore(msgDiv, typingIndicator);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function showTyping(show) {
+        typingIndicator.style.display = show ? 'flex' : 'none';
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    // Knowledge Base Intelligence Matcher
+    function generateAIResponse(query) {
+        const q = query.toLowerCase();
+
+        // 1. Greetings
+        if (q.includes('hi') || q.includes('hello') || q.includes('salam') || q.includes('assalam') || q.includes('hey') || q.includes('namaste')) {
+            return `
+                Walaikum Assalam! 🕋 Welcome to <strong>Al Harmain Umrah Transport</strong>.<br>
+                How can I assist your transport planning in Saudi Arabia today? You can ask me about rates, vehicles, routes, or instant bookings!
+                <div class="ai-suggestions mt-2">
+                    <span class="ai-chip" data-query="Makkah to Madinah Rates">Makkah ↔ Madinah</span>
+                    <span class="ai-chip" data-query="Jeddah Airport Pick & Drop">Jeddah Airport</span>
+                    <span class="ai-chip" data-query="Book on WhatsApp">Book via WhatsApp</span>
+                </div>
+            `;
+        }
+
+        // 2. Booking / How to Book / Rate request in Urdu/Roman Urdu or English
+        if (q.includes('book') || q.includes('booking') || q.includes('chahiay') || q.includes('chahiye') || q.includes('kiraya') || q.includes('karana')) {
+            return `
+                🚗 <strong>Instant Booking Process:</strong><br>
+                Booking with Al Harmain Umrah Transport is fast & simple!<br>
+                1. Select your Pick-up & Drop-off cities (Makkah, Madinah, Jeddah Airport, Taif).<br>
+                2. Choose your preferred vehicle (Sedan, SUV Yukon, Hiace, Coaster, Bus).<br>
+                3. Get instant confirmation on WhatsApp with our 24/7 support team!<br><br>
+                <a href="${window.waLink({"type":"general"})}" target="_blank" class="ai-bot-link">
+                    <i class="fab fa-whatsapp me-1"></i> Click to Book via WhatsApp Now
+                </a>
+            `;
+        }
+
+        // 3. Makkah to Madinah / Intercity
+        if (q.includes('makkah') && q.includes('madinah') || q.includes('intercity') || q.includes('city to city')) {
+            return `
+                🕌 <strong>Makkah ↔ Madinah Intercity Transport:</strong><br>
+                We provide private executive transfer between Makkah and Madinah in brand-new luxury vehicles:<br>
+                • <strong>Toyota Camry / Sonata:</strong> 280 - 310 SAR<br>
+                • <strong>Hyundai Staria (7 Seater):</strong> 340 - 390 SAR<br>
+                • <strong>GMC Yukon XL (VIP SUV):</strong> 560 SAR<br>
+                • <strong>Hiace Van (10-13 Seater):</strong> 395 - 560 SAR<br><br>
+                Includes doorstep hotel pickup, luggage support, and professional multilingual driver.
+                <br><a href="${window.waLink({"type":"route","extra":{"from":"Makkah","to":"Madinah"}})}" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Reserve Makkah to Madinah Taxi</a>
+            `;
+        }
+
+        // 4. Jeddah Airport Transfers
+        if (q.includes('jeddah') || q.includes('airport') || q.includes('pickup') || q.includes('drop')) {
+            return `
+                ✈️ <strong>Jeddah Airport (KAIA) Pick & Drop Service:</strong><br>
+                We track your flight arrival to ensure your driver is waiting at the arrival terminal with a name sign.<br>
+                • <strong>Jeddah Airport to Makkah Hotel:</strong> Sedan from 200 SAR | GMC Yukon from 400 SAR<br>
+                • <strong>Jeddah Airport to Madinah Hotel:</strong> Sedan from 450 SAR | GMC Yukon from 750 SAR<br><br>
+                Available 24 Hours a day, 7 days a week.
+                <br><a href="${window.waLink({"type":"service","name":"a Jeddah Airport pickup"})}" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Book Airport Pickup</a>
+            `;
+        }
+
+        // 5. Vehicles & Fleet (Camry, Yukon, Hiace, Bus, etc.)
+        if (q.includes('fleet') || q.includes('car') || q.includes('vehicle') || q.includes('gmc') || q.includes('yukon') || q.includes('camry') || q.includes('hiace') || q.includes('bus') || q.includes('gaddi')) {
+            return `
+                🚘 <strong>Our Luxury Vehicle Fleet:</strong><br>
+                1. <strong>Toyota Camry / Sonata:</strong> Up to 4 Passengers + 2 Bags<br>
+                2. <strong>Hyundai Staria:</strong> Up to 7 Passengers + 5 Bags<br>
+                3. <strong>GMC Yukon XL:</strong> VIP Executive SUV (7 Passengers + 6 Bags)<br>
+                4. <strong>Hiace Grand Cabin:</strong> 10-13 Passengers + 10 Bags<br>
+                5. <strong>Coaster Minibus:</strong> 20-30 Passengers<br>
+                6. <strong>VIP 50-Seater Bus:</strong> Group Umrah Delegations<br><br>
+                All vehicles feature high-grade dual air conditioning, plush seating, and spotless cleanliness.
+                <div class="ai-suggestions mt-2">
+                    <span class="ai-chip" data-query="Book GMC Yukon">Book GMC Yukon</span>
+                    <span class="ai-chip" data-query="Book Toyota Camry">Book Camry</span>
+                </div>
+            `;
+        }
+
+        // 6. Ziyarat / Sightseeing Tours
+        if (q.includes('ziyarat') || q.includes('ziyarat tour') || q.includes('tour') || q.includes('taif') || q.includes('historical')) {
+            return `
+                🕋 <strong>Sacred Ziyarat Tours:</strong><br>
+                • <strong>Makkah Ziyarat:</strong> Jabal Al-Noor (Cave Hira), Mina, Arafat, Muzdalifah, Jabal Thawr & Masjid Taneem.<br>
+                • <strong>Madinah Ziyarat:</strong> Masjid Quba, Mount Uhud, Masjid Qiblatain, Seven Mosques & Date Gardens.<br>
+                • <strong>Taif City Tour:</strong> Scenic Cable Car, Rose Factories, Al-Hada & Historic Forts.<br><br>
+                Flexible 3 to 5 hour tour packages with knowledgeable drivers.
+                <br><a href="${window.waLink({"type":"service","name":"a Ziyarat tour"})}" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Book Ziyarat Tour</a>
+            `;
+        }
+
+        // 7. Contact Info / Phone / WhatsApp
+        if (q.includes('contact') || q.includes('phone') || q.includes('whatsapp') || q.includes('number') || q.includes('call') || q.includes('support')) {
+            return `
+                📞 <strong>Direct Contact & 24/7 Support:</strong><br>
+                • <strong>Phone / WhatsApp:</strong> <a href="tel:+966596789290" style="color:var(--clr-accent); text-decoration:underline;">+966 59 678 9290</a><br>
+                • <strong>Secondary Line:</strong> +966 56 547 6113<br>
+                • <strong>Email:</strong> info@ALHARMAINTRANSPORT.com<br>
+                • <strong>Operating Hours:</strong> 24 Hours / 7 Days a week<br><br>
+                <a href="${window.waLink({"type":"general"})}" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Open WhatsApp Chat</a>
+            `;
+        }
+
+        // 8. Urdu / Roman Urdu queries (Rates, Kitne, Kahan, etc.)
+        if (q.includes('kitne') || q.includes('kitna') || q.includes('rate') || q.includes('paise') || q.includes('shukriya') || q.includes('kaise')) {
+            return `
+                Aap Al Harmain Umrah Transport ki kisi bhi gaddi (Camry, Yukon SUV, Hiace ya Bus) ki booking WhatsApp par 2 minute mein kar saktay hain.<br><br>
+                • <strong>Makkah se Madinah:</strong> 280 SAR se shuru<br>
+                • <strong>Jeddah Airport Pickup:</strong> 200 SAR se shuru<br>
+                • <strong>Ziyarat Package:</strong> Full custom tour available<br><br>
+                Abhi WhatsApp par rabta karein:
+                <br><a href="${window.waLink({"type":"general"})}" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> WhatsApp Par Baat Karein</a>
+            `;
+        }
+
+        // Default response fallback
+        return `
+            Thank you for asking! 🕋 <strong>AL HARMAIN UMRAH TRANSPORT</strong> provides luxury private taxis across Saudi Arabia (Makkah, Madinah, Jeddah & Taif).<br><br>
+            Would you like to check:
+            <div class="ai-suggestions mt-2">
+                <span class="ai-chip" data-query="Makkah to Madinah Rates">Makkah ↔ Madinah Rates</span>
+                <span class="ai-chip" data-query="Jeddah Airport Pick & Drop">Jeddah Airport Transfer</span>
+                <span class="ai-chip" data-query="Available Vehicles & Fleet">Vehicle Fleet</span>
+                <span class="ai-chip" data-query="WhatsApp Contact Number">Direct WhatsApp Support</span>
+            </div>
+        `;
+    }
+
+})();

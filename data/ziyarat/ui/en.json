@@ -1,0 +1,123 @@
+{
+  "guide": {
+    "eyebrow": "Flagship Guide",
+    "title": "The Complete Ziyarat Guide",
+    "subtitle": "A rich, respectful guide to the sacred sites - Makkah, the steps of Umrah and Hajj, the blessed sites, Taif, Madinah and Badr - available in every language, free to read and download.",
+    "intro": "Whether this is your first visit or your tenth, this guide walks you through the holy places and their history so your Ziyarat is meaningful and informed. Choose your language below to begin.",
+    "chooseLanguage": "Read in your language",
+    "startReading": "Read the guide",
+    "availableIn": "Available in all supported languages",
+    "download": "Download PDF",
+    "print": "Print / Save as PDF",
+    "onThisPage": "On this page",
+    "chaptersTitle": "What's inside",
+    "chapters": {
+      "makkah": {
+        "title": "Makkah",
+        "desc": "An introduction to the holy city, the Ka'bah and the Sacred Mosque."
+      },
+      "umrah": {
+        "title": "Umrah, Step by Step",
+        "desc": "The rites of Umrah explained clearly, in order."
+      },
+      "hajj": {
+        "title": "Hajj, Step by Step",
+        "desc": "A day-by-day walkthrough of the pilgrimage."
+      },
+      "sacredSites": {
+        "title": "Sacred Sites of Makkah",
+        "desc": "The blessed places and historic sites to visit."
+      },
+      "taif": {
+        "title": "Taif",
+        "desc": "The mountain city and its place in the Prophet's ﷺ life."
+      },
+      "madinah": {
+        "title": "Madinah",
+        "desc": "The Prophet's ﷺ city, Masjid an-Nabawi and its Ziyarat."
+      },
+      "badr": {
+        "title": "Badr",
+        "desc": "The site of the first great battle and its martyrs."
+      },
+      "family": {
+        "title": "The Prophet's ﷺ Family",
+        "desc": "An appendix on the wives and children of the Prophet ﷺ."
+      }
+    },
+    "verseLabel": "Qur'an",
+    "hadithLabel": "Hadith",
+    "sourceLabel": "Source",
+    "translationLabel": "Translation",
+    "noteTitle": "A note on content",
+    "contentPending": "The full text of this chapter - including Qur'anic verses, ahadith and their sources - will be published here once reviewed and verified for authenticity. We take great care to ensure every word is accurate. Please check back soon, or contact us if you would like to help review the content.",
+    "machineNotice": "This translation is a machine-assisted draft, pending scholar review. The Arabic Qur’an verses and ahadith are kept unchanged; some names may not yet be localised.",
+    "verifyNote": "All Qur'anic verses and ahadith are verified against authentic sources before publication."
+  },
+  "ziyaratLocation": {
+    "title": "Location",
+    "cityLabel": "City",
+    "pdfCoordinates": "Coordinates",
+    "scanForDirections": "Scan for directions",
+    "distanceLabel": "Distance",
+    "driveLabel": "Drive time",
+    "directions": "Get Directions",
+    "appleMaps": "Apple Maps",
+    "book": "Book this Ziyarat",
+    "fromHaram": "from Masjid al-Haram",
+    "fromNabawi": "from Masjid an-Nabawi",
+    "approx": "approx.",
+    "km": "km",
+    "min": "min",
+    "bestTimeLabel": "Best time",
+    "waMessage": "Assalamu Alaikum, I want to book a Ziyarat trip to {place}.",
+    "bestTime": {
+      "earlyMorning": "Early morning",
+      "morning": "Morning",
+      "afterFajr": "After Fajr"
+    },
+    "city": {
+      "makkah": "Makkah",
+      "madinah": "Madinah",
+      "taif": "Taif",
+      "jeddah": "Jeddah"
+    }
+  },
+  "ziyaratIndex": {
+    "title": "All Ziyarat Locations",
+    "subtitle": "Every place in this guide, grouped by city. Tap Directions to open it in your map app.",
+    "fullRoute": "Open full route in Google Maps"
+  },
+  "nav": {
+    "home": "Home",
+    "pickDrop": "Book Now",
+    "ziyaratGuide": "Ziyarat Guide",
+    "about": "About Us",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms"
+  },
+  "common": {
+    "bookNow": "Book Now on WhatsApp",
+    "callNow": "Call Now",
+    "whatsapp": "WhatsApp",
+    "licensed": "Licensed",
+    "licenseNo": "License No.",
+    "unifiedNo": "Unified National No.",
+    "getQuote": "Get a Free Quote",
+    "chatWhatsapp": "Chat on WhatsApp",
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "language": "Language",
+    "chooseLanguage": "Choose your language",
+    "downloadPdf": "Download PDF",
+    "print": "Print / Save as PDF",
+    "onThisPage": "On this page",
+    "coverageShort": "Makkah · Madinah · Jeddah · Taif",
+    "support247": "24/7 Support",
+    "backToTop": "Back to top",
+    "home": "Home"
+  }
+}

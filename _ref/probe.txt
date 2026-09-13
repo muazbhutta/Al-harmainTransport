@@ -1,0 +1,91 @@
+// Measures the reference guide's real rendered design.
+const hex = (c) => {
+  const m = (c || '').match(/\d+(\.\d+)?/g);
+  if (!m) return c;
+  const [r, g, b, a] = m.map(Number);
+  const h = '#' + [r, g, b].map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
+  return a !== undefined && a < 1 ? `${h} @${a}` : h;
+};
+const type = (el) => {
+  if (!el) return null;
+  const c = getComputedStyle(el);
+  return {
+    font: c.fontFamily.split(',')[0].replace(/["']/g, ''),
+    size: c.fontSize,
+    weight: c.fontWeight,
+    lh: c.lineHeight,
+    ls: c.letterSpacing,
+    color: hex(c.color),
+    mt: c.marginTop,
+    mb: c.marginBottom,
+  };
+};
+const box = (el) => {
+  if (!el) return null;
+  const c = getComputedStyle(el);
+  const r = el.getBoundingClientRect();
+  return {
+    w: Math.round(r.width),
+    bg: hex(c.backgroundColor),
+    border: `${c.borderTopWidth} ${c.borderTopStyle} ${hex(c.borderTopColor)}`,
+    borderLeft: `${c.borderLeftWidth} ${c.borderLeftStyle} ${hex(c.borderLeftColor)}`,
+    radius: c.borderRadius,
+    padding: c.padding,
+    shadow: c.boxShadow === 'none' ? 'none' : c.boxShadow.slice(0, 90),
+  };
+};
+
+const $ = (s) => document.querySelector(s);
+const all = (s) => [...document.querySelectorAll(s)];
+
+// find the scripture / location / index blocks by their content
+const arabicEl = all('*').find((e) => /[ء-ي]/.test(e.textContent || '') && e.children.length === 0 && (e.textContent || '').length > 25);
+const scriptureCard = arabicEl?.closest('figure,div,section,blockquote');
+const dirBtn = all('a').find((a) => /maps/.test(a.href || ''));
+const locCard = dirBtn?.closest('div,aside,section');
+const table = $('table');
+const container = $('main .container, main > div, main');
+
+const out = {
+  page: {
+    bg: hex(getComputedStyle(document.body).backgroundColor),
+    color: hex(getComputedStyle(document.body).color),
+    font: getComputedStyle(document.body).fontFamily.split(',')[0].replace(/["']/g, ''),
+    size: getComputedStyle(document.body).fontSize,
+    lh: getComputedStyle(document.body).lineHeight,
+  },
+  h1: type($('h1')),
+  h2: type($('h2')),
+  h3: type($('h3')),
+  h4: type($('h4')),
+  p: type(all('p').find((p) => (p.textContent || '').length > 90)),
+  small: type(all('p,span,div').find((e) => parseFloat(getComputedStyle(e).fontSize) <= 13 && (e.textContent || '').trim().length > 12)),
+  arabic: type(arabicEl),
+  scriptureCard: box(scriptureCard),
+  locationCard: box(locCard),
+  directionsBtn: (() => {
+    if (!dirBtn) return null;
+    const c = getComputedStyle(dirBtn);
+    return { bg: hex(c.backgroundColor), color: hex(c.color), radius: c.borderRadius, padding: c.padding, size: c.fontSize, weight: c.fontWeight, border: `${c.borderTopWidth} ${hex(c.borderTopColor)}` };
+  })(),
+  table: (() => {
+    if (!table) return null;
+    const th = table.querySelector('th');
+    const td = table.querySelector('td');
+    const tr = table.querySelector('tbody tr');
+    return {
+      wrapper: box(table.parentElement),
+      th: th ? { bg: hex(getComputedStyle(th).backgroundColor), color: hex(getComputedStyle(th).color), size: getComputedStyle(th).fontSize, weight: getComputedStyle(th).fontWeight, padding: getComputedStyle(th).padding } : null,
+      td: td ? { size: getComputedStyle(td).fontSize, padding: getComputedStyle(td).padding, borderBottom: `${getComputedStyle(td).borderBottomWidth} ${hex(getComputedStyle(td).borderBottomColor)}` } : null,
+      trBorder: tr ? `${getComputedStyle(tr).borderBottomWidth} ${hex(getComputedStyle(tr).borderBottomColor)}` : null,
+    };
+  })(),
+  layout: {
+    containerWidth: container ? Math.round(container.getBoundingClientRect().width) : null,
+    containerPadding: container ? getComputedStyle(container).padding : null,
+    sectionY: getComputedStyle(document.documentElement).getPropertyValue('--section-y').trim(),
+    headerH: getComputedStyle(document.documentElement).getPropertyValue('--header-h').trim(),
+    radiusCard: getComputedStyle(document.documentElement).getPropertyValue('--radius-card').trim(),
+  },
+};
+JSON.stringify(out, null, 1);

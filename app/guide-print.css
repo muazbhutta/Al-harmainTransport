@@ -1,0 +1,160 @@
+/*
+ * Print edition of the Ziyarat guide (/ziyarat-guide/<lang>/print), laid out
+ * for A4 and printed to PDF by _pdf.mjs — one file per language.
+ *
+ * Dark ink on the paper, no page backgrounds. The site's own stylesheets are
+ * dark-theme and force light text with !important, so everything here is
+ * scoped under .guide-print and wins on specificity.
+ */
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 20mm;
+  @bottom-center {
+    content: counter(page) ' / ' counter(pages);
+    font: 9pt 'Poppins', 'Segoe UI', sans-serif;
+    color: #5b6573;
+  }
+}
+@page :first {
+  @bottom-center { content: none; }
+}
+
+/* On paper: no background at all. On screen (someone opening the print page
+   directly), a light sheet — the site's body rule is dark and !important, so
+   this selector has to out-rank it. */
+html body:has(.guide-print) { background: var(--clr-brand-tint) !important; background-image: none !important; }
+@media print {
+  html:has(.guide-print), html body:has(.guide-print) { background: none !important; }
+}
+/* The first PDFs came out with the site's dark page background printed behind
+   the (dark) text. Nothing in the print edition paints a background. */
+.guide-print, .guide-print * { background-color: transparent !important; background-image: none !important; }
+
+.guide-print {
+  --ink: #0c1119;          /* --clr-on-accent: near-black, never pure black */
+  --ink-soft: #2b3747;     /* --clr-border as text: body copy */
+  --ink-faint: #5b6573;
+  --rule: #d4a02c;         /* --clr-accent, for rules only (not text) */
+  --navy: #183048;         /* --clr-brand, headings */
+  --hair: #cfd6df;
+
+  color: var(--ink) !important;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.6;
+  max-width: none;
+}
+
+/* the site's sitewide text colours are !important: take them back */
+.guide-print :is(p, li, dd, dt, td, th, span, strong, figcaption, caption, blockquote, a, label) {
+  color: inherit !important;
+}
+.guide-print :is(h1, h2, h3, h4) {
+  color: var(--navy) !important;
+  font-family: inherit !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  break-after: avoid;
+}
+.guide-print h1 { font-size: 28pt !important; margin: 0 0 10pt !important; }
+.guide-print h2 { font-size: 18pt !important; margin: 4pt 0 8pt !important; }
+.guide-print h3 { font-size: 13pt !important; margin: 16pt 0 6pt !important; }
+.guide-print h4 { font-size: 11pt !important; margin: 12pt 0 4pt !important; }
+.guide-print p { margin: 0 0 8pt; max-width: none !important; color: var(--ink-soft) !important; }
+.guide-print a { text-decoration: underline; text-decoration-color: var(--hair); }
+
+/* fonts per script — Windows fonts the PDF embeds */
+.guide-print[lang="ar"], .guide-print[lang="fa"] { font-family: 'Segoe UI', Tahoma, 'Traditional Arabic', sans-serif; }
+.guide-print[lang="ur"] { font-family: 'Urdu Typesetting', 'Segoe UI', Tahoma, sans-serif; font-size: 12.5pt; line-height: 1.9; }
+.guide-print[lang="hi"], .guide-print[lang="bn"] { font-family: 'Nirmala UI', 'Poppins', sans-serif; }
+.guide-print :is(h1, h2, h3, h4, p, li, td, th, dt, dd, figcaption) { font-family: inherit !important; }
+.guide-print .guide-arabic {
+  font-family: 'Traditional Arabic', 'Sakkal Majalla', 'Segoe UI', Tahoma, serif !important;
+  font-size: 15pt; line-height: 2; color: var(--ink) !important; margin: 4pt 0 6pt;
+}
+
+/* ------------------------------------------------------------------ cover */
+.guide-print__cover { break-after: page; padding-top: 18mm; }
+.guide-print__eyebrow {
+  display: inline-block; font-size: 8.5pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--navy) !important; border-bottom: 2pt solid var(--rule); padding-bottom: 2pt; margin-bottom: 14pt;
+}
+.guide-print__cover img { width: 100%; height: auto; border-radius: 6pt; margin: 14pt 0; }
+.guide-print__lead { font-size: 12pt; }
+.guide-print__meta { margin-top: 18pt; font-size: 9.5pt; color: var(--ink-faint) !important; }
+.guide-print__nowrap { white-space: nowrap; }   /* the phone number never breaks across lines */
+.guide-print__notice {
+  margin-top: 14pt; padding: 8pt 10pt; border: 1pt solid var(--rule); border-radius: 4pt;
+  font-size: 9pt; color: var(--ink-soft) !important;
+}
+
+/* --------------------------------------------------------------- contents */
+.guide-print__toc { break-after: page; }
+.guide-print__toc ol { margin: 0; padding-inline-start: 18pt; }
+.guide-print__toc li { margin: 0 0 6pt; font-size: 11pt; }
+.guide-print__toc a { text-decoration: none; color: var(--ink) !important; }
+
+/* --------------------------------------------------------------- chapters */
+.guide-print__chapter { break-before: page; }
+.guide-print .guide-eyebrow {
+  display: block; font-size: 8.5pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-faint) !important;
+}
+
+/* the guide's blocks, re-dressed for paper */
+.guide-print :is(.guide-scripture, .guide-location, .guide-callout, .guide-infocard, .guide-steps li, tr) {
+  break-inside: avoid;
+}
+.guide-print .guide-scripture {
+  margin: 10pt 0; padding: 8pt 12pt; border-inline-start: 2.5pt solid var(--rule);
+  background: none !important; border-radius: 0;
+}
+.guide-print .guide-scripture__label { font-size: 8.5pt; font-weight: 700; color: var(--navy) !important; margin: 0 0 2pt; }
+.guide-print .guide-translation { font-style: italic; }
+.guide-print .guide-source { font-size: 8.5pt; color: var(--ink-faint) !important; }
+.guide-print .guide-location,
+.guide-print .guide-callout,
+.guide-print .guide-infocard {
+  margin: 8pt 0; padding: 8pt 10pt; border: 0.75pt solid var(--hair); border-radius: 4pt; background: none !important;
+}
+.guide-print .guide-callout--warning { border-color: #f06a6a; }
+.guide-print .guide-callout__title { font-weight: 700; margin-bottom: 2pt; }
+.guide-print .guide-location__grid { display: flex; flex-wrap: wrap; gap: 4pt 20pt; margin: 0 0 4pt; }
+.guide-print .guide-location__term { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint) !important; }
+.guide-print .guide-location__value { margin: 0; font-weight: 600; }
+.guide-print .guide-btn {
+  display: inline; padding: 0; border: 0; background: none !important; box-shadow: none !important;
+  color: var(--navy) !important; font-size: 9pt; font-weight: 600; text-decoration: underline;
+}
+.guide-print .guide-takeaways { padding-inline-start: 16pt; margin: 4pt 0 8pt; }
+.guide-print .guide-takeaways li { margin-bottom: 3pt; }
+.guide-print .guide-steps { list-style: none; padding: 0; margin: 6pt 0; }
+.guide-print .guide-steps li { display: flex; gap: 8pt; margin-bottom: 6pt; }
+.guide-print .guide-steps__num {
+  flex: none; width: 16pt; height: 16pt; border-radius: 50%; border: 1pt solid var(--rule);
+  display: inline-flex; align-items: center; justify-content: center; font-size: 8pt; font-weight: 700;
+}
+.guide-print .guide-steps__title { display: block; }
+.guide-print .guide-table { margin: 8pt 0; overflow: visible; border: 0; }
+.guide-print table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+.guide-print :is(th, td) { border: 0.75pt solid var(--hair); padding: 4pt 6pt; text-align: start; background: none !important; }
+.guide-print th { font-weight: 700; color: var(--navy) !important; }
+
+/* the all-locations index */
+.guide-print__index { break-before: page; }
+.guide-print .guide-locations > div { margin-bottom: 12pt !important; }
+.guide-print .guide-index__city { font-size: 12pt !important; margin: 12pt 0 4pt !important; }
+.guide-print .guide-index__count { font-weight: 400; color: var(--ink-faint) !important; }
+.guide-print .guide-index__list { list-style: none; margin: 0; padding: 0; }
+.guide-print .guide-index__row {
+  display: flex; align-items: baseline; gap: 10pt; padding: 3pt 0;
+  border-bottom: 0.5pt solid var(--hair); break-inside: avoid; font-size: 9.5pt;
+}
+.guide-print .guide-index__name { flex: 1; text-decoration: none; color: var(--ink) !important; }
+.guide-print .guide-index__dist { color: var(--ink-faint) !important; white-space: nowrap; }
+.guide-print .guide-index__note { color: var(--ink-faint) !important; }
+
+.guide-print__end { margin-top: 18pt; padding-top: 8pt; border-top: 0.75pt solid var(--hair); font-size: 9pt; color: var(--ink-faint) !important; }

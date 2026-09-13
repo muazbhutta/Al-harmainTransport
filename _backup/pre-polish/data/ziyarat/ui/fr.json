@@ -1,0 +1,123 @@
+{
+  "guide": {
+    "eyebrow": "Guide phare",
+    "title": "Le guide Ziyarat complet",
+    "subtitle": "Un guide riche et respectueux des lieux saints - La Mecque, les étapes de l'Omra et du Hajj, les lieux bénis, Taïf, Médine et Badr - disponible dans toutes les langues, gratuit à lire et à télécharger.",
+    "intro": "Que ce soit votre première visite ou la dixième, ce guide vous accompagne à travers les lieux saints et leur histoire pour que votre Ziyarat soit significative et éclairée. Choisissez votre langue ci-dessous pour commencer.",
+    "chooseLanguage": "Lisez dans votre langue",
+    "startReading": "Lire le guide",
+    "availableIn": "Disponible dans toutes les langues prises en charge",
+    "download": "Télécharger le PDF",
+    "print": "Imprimer / Enregistrer en PDF",
+    "onThisPage": "Sur cette page",
+    "chaptersTitle": "Au sommaire",
+    "chapters": {
+      "makkah": {
+        "title": "La Mecque",
+        "desc": "Introduction à la ville sainte, la Kaaba et la Mosquée sacrée."
+      },
+      "umrah": {
+        "title": "L'Omra, étape par étape",
+        "desc": "Les rites de l'Omra expliqués clairement, dans l'ordre."
+      },
+      "hajj": {
+        "title": "Le Hajj, étape par étape",
+        "desc": "Un parcours jour par jour du pèlerinage."
+      },
+      "sacredSites": {
+        "title": "Les lieux saints de La Mecque",
+        "desc": "Les lieux bénis et sites historiques à visiter."
+      },
+      "taif": {
+        "title": "Taïf",
+        "desc": "La ville de montagne et sa place dans la vie du Prophète ﷺ."
+      },
+      "madinah": {
+        "title": "Médine",
+        "desc": "La ville du Prophète ﷺ, Masjid an-Nabawi et sa Ziyarat."
+      },
+      "badr": {
+        "title": "Badr",
+        "desc": "Le lieu de la première grande bataille et ses martyrs."
+      },
+      "family": {
+        "title": "La famille du Prophète ﷺ",
+        "desc": "Une annexe sur les épouses et les enfants du Prophète ﷺ."
+      }
+    },
+    "verseLabel": "Coran",
+    "hadithLabel": "Hadith",
+    "sourceLabel": "Source",
+    "translationLabel": "Traduction",
+    "noteTitle": "Note sur le contenu",
+    "contentPending": "Le texte complet de ce chapitre - y compris les versets coraniques, les hadiths et leurs sources - sera publié ici après vérification et validation de son authenticité. Nous veillons scrupuleusement à l'exactitude de chaque mot. Revenez bientôt, ou contactez-nous si vous souhaitez aider à réviser le contenu.",
+    "machineNotice": "Cette traduction est un brouillon assisté par machine, en attente de révision savante. Les versets du Coran et les hadiths en arabe restent inchangés ; certains noms ne sont pas encore localisés.",
+    "verifyNote": "Tous les versets coraniques et hadiths sont vérifiés à partir de sources authentiques avant publication."
+  },
+  "ziyaratLocation": {
+    "title": "Emplacement",
+    "cityLabel": "Ville",
+    "pdfCoordinates": "Coordonnées",
+    "scanForDirections": "Scannez pour l'itinéraire",
+    "distanceLabel": "Distance",
+    "driveLabel": "Temps de trajet",
+    "directions": "Itinéraire",
+    "appleMaps": "Apple Plans",
+    "book": "Réserver cette Ziyarat",
+    "fromHaram": "depuis la Masjid al-Haram",
+    "fromNabawi": "depuis la Masjid an-Nabawi",
+    "approx": "env.",
+    "km": "km",
+    "min": "min",
+    "bestTimeLabel": "Meilleur moment",
+    "waMessage": "Assalamu Alaikum, je souhaite réserver un trajet Ziyarat vers {place}.",
+    "bestTime": {
+      "earlyMorning": "Tôt le matin",
+      "morning": "Matin",
+      "afterFajr": "Après le Fajr"
+    },
+    "city": {
+      "makkah": "La Mecque",
+      "madinah": "Médine",
+      "taif": "Taïf",
+      "jeddah": "Djeddah"
+    }
+  },
+  "ziyaratIndex": {
+    "title": "Tous les lieux de Ziyarat",
+    "subtitle": "Tous les lieux de ce guide, regroupés par ville. Touchez Itinéraire pour l'ouvrir dans votre application de cartes.",
+    "fullRoute": "Ouvrir l'itinéraire complet dans Google Maps"
+  },
+  "nav": {
+    "home": "Accueil",
+    "pickDrop": "Réserver",
+    "ziyaratGuide": "Guide Ziyarat",
+    "about": "À propos",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "privacy": "Confidentialité",
+    "terms": "Conditions"
+  },
+  "common": {
+    "bookNow": "Réserver sur WhatsApp",
+    "callNow": "Appeler",
+    "whatsapp": "WhatsApp",
+    "licensed": "Sous licence",
+    "licenseNo": "N° de licence",
+    "unifiedNo": "N° national unifié",
+    "getQuote": "Obtenir un devis gratuit",
+    "chatWhatsapp": "Discuter sur WhatsApp",
+    "skipToContent": "Aller au contenu",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "language": "Langue",
+    "chooseLanguage": "Choisissez votre langue",
+    "downloadPdf": "Télécharger le PDF",
+    "print": "Imprimer / Enregistrer en PDF",
+    "onThisPage": "Sur cette page",
+    "coverageShort": "La Mecque · Médine · Djeddah · Taïf",
+    "support247": "Assistance 24h/24",
+    "backToTop": "Retour en haut",
+    "home": "Accueil"
+  }
+}

@@ -1,0 +1,36 @@
+const hex=c=>{const m=(c||'').match(/[\d.]+/g);if(!m)return c;const[r,g,b,a]=m.map(Number);
+ const h='#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');return (a!==undefined&&a<1)?h+' @'+a:h};
+const A=[...document.querySelectorAll('*')];const txt=e=>(e.textContent||'').trim();
+const info=(e,label)=>{if(!e)return{label,absent:true};const c=getComputedStyle(e);const r=e.getBoundingClientRect();
+ return{label,tag:e.tagName.toLowerCase(),cls:(e.className||'').toString().slice(0,95),w:Math.round(r.width),
+  bg:hex(c.backgroundColor),radius:c.borderRadius,pad:c.padding,gap:c.gap,
+  border:`${c.borderTopWidth} ${hex(c.borderTopColor)}`,
+  borderIS:`${c.borderInlineStartWidth} ${hex(c.borderInlineStartColor)}`,
+  shadow:c.boxShadow==='none'?'none':c.boxShadow.slice(0,90)}};
+
+// scripture card: the styled ancestor of a "Source:" line
+const src=A.find(e=>e.children.length===0&&/^Source:/i.test(txt(e)));
+let card=src, hops=[];
+for(let i=0;i<5&&card;i++){card=card.parentElement;if(!card)break;
+ const c=getComputedStyle(card);
+ hops.push(info(card,'ancestor'+(i+1)));
+ if(c.backgroundColor!=='rgba(0, 0, 0, 0)'||c.borderInlineStartWidth!=='0px')break;}
+
+// location card: ancestor of a Get Directions link
+const dir=A.find(e=>e.tagName==='A'&&/directions/i.test(txt(e)));
+let loc=dir,lhops=[];
+for(let i=0;i<4&&loc;i++){loc=loc.parentElement;if(!loc)break;
+ const c=getComputedStyle(loc);lhops.push(info(loc,'locAncestor'+(i+1)));
+ if(c.backgroundColor!=='rgba(0, 0, 0, 0)'||c.borderTopWidth!=='0px')break;}
+
+// index city heading with a (count)
+const cityH=A.find(e=>/^\s*(Makkah|Madinah|Taif)\s*\(\d+\)/.test(txt(e))&&e.children.length<3);
+const ch=cityH?getComputedStyle(cityH):null;
+
+JSON.stringify({
+ sourceLineText:src?txt(src).slice(0,44):null,
+ scriptureAncestors:hops,
+ directionsText:dir?txt(dir):null,
+ locationAncestors:lhops,
+ cityHeading:cityH?{text:txt(cityH).slice(0,24),size:ch.fontSize,weight:ch.fontWeight,color:hex(ch.color),lh:ch.lineHeight,ls:ch.letterSpacing}:null,
+},null,1);

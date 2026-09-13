@@ -1,0 +1,30 @@
+const hex=c=>{const m=(c||'').match(/[\d.]+/g);if(!m)return c;const[r,g,b,a]=m.map(Number);
+ const h='#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');return (a!==undefined&&a<1)?h+' @'+a:h};
+const ty=e=>{if(!e)return null;const c=getComputedStyle(e);
+ return {size:c.fontSize,weight:c.fontWeight,lh:c.lineHeight,ls:c.letterSpacing,color:hex(c.color),tt:c.textTransform}};
+const bx=e=>{if(!e)return null;const c=getComputedStyle(e);const r=e.getBoundingClientRect();
+ return {w:Math.round(r.width),bg:hex(c.backgroundColor),radius:c.borderRadius,pad:c.padding,
+  bIS:c.borderInlineStartWidth+' '+hex(c.borderInlineStartColor),shadow:c.boxShadow==='none'?'none':'yes'}};
+const A=[...document.querySelectorAll('*')];const T=e=>(e.textContent||'').trim();
+const q=s=>document.querySelector(s);
+const src=A.find(e=>e.children.length===0&&/^Source:/i.test(T(e)));
+const card=src?src.closest('figure'):q('.guide-scripture');
+const ar=card?[...card.querySelectorAll('*')].find(e=>e.children.length===0&&/[\u0600-\u06FF]/.test(T(e))):null;
+const trans=card?[...card.querySelectorAll('p,blockquote')].find(e=>!/[\u0600-\u06FF]/.test(T(e))&&T(e).length>40):null;
+const dir=A.find(e=>e.tagName==='A'&&/directions/i.test(T(e)));
+const loc=dir?dir.closest('aside,div'):null;
+const h2=q('h2');
+const eyebrow=h2?h2.previousElementSibling:null;
+const prose=h2?h2.closest('article,div'):null;
+JSON.stringify({
+ page:{bg:hex(getComputedStyle(document.body).backgroundColor)},
+ h1:ty(q('h1')), h2:ty(h2), h3:ty(q('h3')),
+ eyebrow:{...ty(eyebrow),text:eyebrow?T(eyebrow).slice(0,16):null},
+ body:ty(A.find(e=>e.tagName==='P'&&T(e).length>110)),
+ scriptureBox:bx(card), arabic:ty(ar), translation:ty(trans),
+ source:ty(src),
+ locationBox:bx(loc),
+ dirBtn:{...ty(dir),...bx(dir)},
+ proseWidth:prose?Math.round(prose.getBoundingClientRect().width):null,
+ containerWidth:(()=>{const c=q('.guide-container')||q('main .container')||q('main>div');return c?Math.round(c.getBoundingClientRect().width):null})(),
+},null,1);

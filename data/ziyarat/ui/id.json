@@ -1,0 +1,123 @@
+{
+  "guide": {
+    "eyebrow": "Panduan Unggulan",
+    "title": "Panduan Ziarah Lengkap",
+    "subtitle": "Panduan yang kaya dan penuh hormat untuk situs-situs suci - Makkah, langkah Umrah & Haji, situs mulia, Taif, Madinah, dan Badr - tersedia dalam setiap bahasa, gratis untuk dibaca dan diunduh.",
+    "intro": "Baik ini kunjungan pertama atau kesepuluh Anda, panduan ini menuntun Anda menyusuri tempat-tempat suci dan sejarahnya agar Ziarah Anda bermakna dan berilmu. Pilih bahasa Anda di bawah untuk memulai.",
+    "chooseLanguage": "Baca dalam bahasa Anda",
+    "startReading": "Baca panduan",
+    "availableIn": "Tersedia dalam semua bahasa yang didukung",
+    "download": "Unduh PDF",
+    "print": "Cetak / Simpan PDF",
+    "onThisPage": "Di halaman ini",
+    "chaptersTitle": "Isi panduan",
+    "chapters": {
+      "makkah": {
+        "title": "Makkah",
+        "desc": "Pengantar kota suci, Ka'bah, dan Masjidil Haram."
+      },
+      "umrah": {
+        "title": "Umrah, Langkah demi Langkah",
+        "desc": "Rukun Umrah dijelaskan dengan jelas dan berurutan."
+      },
+      "hajj": {
+        "title": "Haji, Langkah demi Langkah",
+        "desc": "Panduan Haji hari demi hari."
+      },
+      "sacredSites": {
+        "title": "Situs Suci Makkah",
+        "desc": "Tempat-tempat mulia dan situs bersejarah untuk dikunjungi."
+      },
+      "taif": {
+        "title": "Taif",
+        "desc": "Kota pegunungan dan tempatnya dalam kehidupan Nabi ﷺ."
+      },
+      "madinah": {
+        "title": "Madinah",
+        "desc": "Kota Nabi ﷺ, Masjid Nabawi, dan Ziarahnya."
+      },
+      "badr": {
+        "title": "Badr",
+        "desc": "Lokasi pertempuran besar pertama dan para syuhadanya."
+      },
+      "family": {
+        "title": "Keluarga Nabi ﷺ",
+        "desc": "Lampiran tentang istri dan anak-anak Nabi ﷺ."
+      }
+    },
+    "verseLabel": "Al-Qur'an",
+    "hadithLabel": "Hadis",
+    "sourceLabel": "Sumber",
+    "translationLabel": "Terjemahan",
+    "noteTitle": "Catatan tentang konten",
+    "contentPending": "Teks lengkap bab ini - termasuk ayat Al-Qur'an, hadis, dan sumbernya - akan diterbitkan di sini setelah ditinjau dan diverifikasi keasliannya. Kami sangat menjaga ketepatan setiap kata. Silakan periksa kembali segera, atau hubungi kami jika Anda ingin membantu meninjau kontennya.",
+    "machineNotice": "Terjemahan ini adalah draf berbantuan mesin, menunggu tinjauan ulama. Ayat Al-Qur’an dan hadis berbahasa Arab tetap tidak diubah; beberapa nama mungkin belum dilokalkan.",
+    "verifyNote": "Semua ayat Al-Qur'an dan hadis diverifikasi terhadap sumber otentik sebelum diterbitkan."
+  },
+  "ziyaratLocation": {
+    "title": "Lokasi",
+    "cityLabel": "Kota",
+    "pdfCoordinates": "Koordinat",
+    "scanForDirections": "Pindai untuk arah",
+    "distanceLabel": "Jarak",
+    "driveLabel": "Waktu tempuh",
+    "directions": "Petunjuk Arah",
+    "appleMaps": "Apple Maps",
+    "book": "Pesan Ziarah ini",
+    "fromHaram": "dari Masjidil Haram",
+    "fromNabawi": "dari Masjid Nabawi",
+    "approx": "sekitar",
+    "km": "km",
+    "min": "mnt",
+    "bestTimeLabel": "Waktu terbaik",
+    "waMessage": "Assalamu Alaikum, saya ingin memesan perjalanan Ziarah ke {place}.",
+    "bestTime": {
+      "earlyMorning": "Pagi buta",
+      "morning": "Pagi",
+      "afterFajr": "Setelah Subuh"
+    },
+    "city": {
+      "makkah": "Makkah",
+      "madinah": "Madinah",
+      "taif": "Taif",
+      "jeddah": "Jeddah"
+    }
+  },
+  "ziyaratIndex": {
+    "title": "Semua Lokasi Ziarah",
+    "subtitle": "Semua tempat dalam panduan ini, dikelompokkan per kota. Ketuk Petunjuk Arah untuk membukanya di aplikasi peta.",
+    "fullRoute": "Buka rute lengkap di Google Maps"
+  },
+  "nav": {
+    "home": "Beranda",
+    "pickDrop": "Pesan Sekarang",
+    "ziyaratGuide": "Panduan Ziarah",
+    "about": "Tentang Kami",
+    "faq": "FAQ",
+    "contact": "Kontak",
+    "privacy": "Kebijakan Privasi",
+    "terms": "Ketentuan"
+  },
+  "common": {
+    "bookNow": "Pesan Sekarang via WhatsApp",
+    "callNow": "Telepon Sekarang",
+    "whatsapp": "WhatsApp",
+    "licensed": "Berlisensi",
+    "licenseNo": "No. Lisensi",
+    "unifiedNo": "No. Nasional Terpadu",
+    "getQuote": "Dapatkan Penawaran Gratis",
+    "chatWhatsapp": "Chat via WhatsApp",
+    "skipToContent": "Lewati ke konten",
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu",
+    "language": "Bahasa",
+    "chooseLanguage": "Pilih bahasa Anda",
+    "downloadPdf": "Unduh PDF",
+    "print": "Cetak / Simpan PDF",
+    "onThisPage": "Di halaman ini",
+    "coverageShort": "Makkah · Madinah · Jeddah · Taif",
+    "support247": "Dukungan 24/7",
+    "backToTop": "Kembali ke atas",
+    "home": "Beranda"
+  }
+}

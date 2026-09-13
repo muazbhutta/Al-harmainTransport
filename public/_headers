@@ -1,0 +1,6 @@
+# Netlify / Cloudflare Pages. A static export cannot set response headers
+# itself, so the host has to: serve the Ziyarat guide PDFs as downloads.
+/downloads/*.pdf
+  Content-Type: application/pdf
+  Content-Disposition: attachment
+  X-Content-Type-Options: nosniff

@@ -1,0 +1,304 @@
+/*
+ * globals.css — the site palette (STEP 2) and the navbar alignment.
+ *
+ * Every colour on the site resolves to one of the variables below: _polish.mjs
+ * rewrites the original stylesheets, the page markup and the scripts to use
+ * them, so nothing outside this palette is left. Each colour has an `-rgb`
+ * twin for the translucent uses (overlays, hairlines, glows).
+ *
+ * Direction (approved): keep the dark ground with gold accents; the neutrals
+ * come from the logo's navy and silver. No pure black, no pure white.
+ * Contrast ratios are listed in STEP2.md.
+ *
+ * Loaded last, after the rewritten original stylesheets.
+ */
+:root {
+  /* brand — the logo's navy */
+  --clr-brand: #183048;          --clr-brand-rgb: 24, 48, 72;
+  --clr-brand-dark: #10233a;     --clr-brand-dark-rgb: 16, 35, 58;      /* hover / active */
+  --clr-brand-tint: #e9eef4;     --clr-brand-tint-rgb: 233, 238, 244;   /* the light tint */
+
+  /* accent — one gold, for primary buttons and small highlights */
+  --clr-accent: #d4a02c;         --clr-accent-rgb: 212, 160, 44;
+  --clr-accent-hover: #b8891f;   --clr-accent-hover-rgb: 184, 137, 31;
+  --clr-on-accent: #0c1119;      --clr-on-accent-rgb: 12, 17, 25;
+
+  /* neutrals — navy-tinted darks, silver text */
+  --clr-bg: #0c1119;             --clr-bg-rgb: 12, 17, 25;              /* page background */
+  --clr-surface: #121a26;        --clr-surface-rgb: 18, 26, 38;         /* cards, bands */
+  --clr-surface-raised: #1a2432; --clr-surface-raised-rgb: 26, 36, 50;  /* menus, inputs */
+  --clr-border: #2b3747;         --clr-border-rgb: 43, 55, 71;
+  --clr-heading: #eef1f5;        --clr-heading-rgb: 238, 241, 245;      /* same neutral as body, */
+  --clr-text: #c3cad4;           --clr-text-rgb: 195, 202, 212;         /* at different weights  */
+  --clr-muted: #97a1af;          --clr-muted-rgb: 151, 161, 175;
+
+  /* semantic */
+  --clr-success: #25d366;        --clr-success-rgb: 37, 211, 102;       /* WhatsApp */
+  --clr-success-hover: #1eb257;  --clr-success-hover-rgb: 30, 178, 87;
+  --clr-on-success: #0c1119;     --clr-on-success-rgb: 12, 17, 25;
+  --clr-warning: #f08a3c;        --clr-warning-rgb: 240, 138, 60;
+  --clr-error: #f06a6a;          --clr-error-rgb: 240, 106, 106;
+}
+
+/* -------------------------------------------------------------- type (STEP 3)
+ * One scale, defined once: 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 48.
+ * _polish.mjs rewrites every font-size on the site to one of these variables.
+ * The three largest steps shrink on smaller screens, so a size is on the
+ * scale at every width. Headings: one family, weight 700, line height 1.2, a
+ * size per level. Body: weight 400, line height 1.6, lines capped at 70ch.
+ */
+:root {
+  --text-xs: 12px;  --text-sm: 14px;  --text-base: 16px;  --text-lg: 18px;  --text-xl: 20px;
+  --text-2xl: 24px; --text-3xl: 30px; --text-4xl: 36px;   --text-5xl: 48px;
+
+  --h1: var(--text-5xl); --h2: var(--text-4xl); --h3: var(--text-2xl);
+  --h4: var(--text-xl);  --h5: var(--text-lg);  --h6: var(--text-base);
+
+  --lh-heading: 1.2;
+  --lh-body: 1.6;
+  --ls-caps: 0.08em;     /* every uppercase label */
+  --measure: 70ch;       /* longest paragraph line */
+}
+@media (max-width: 991.98px) { :root { --text-5xl: 36px; } }
+@media (max-width: 767.98px) { :root { --text-5xl: 30px; --text-4xl: 30px; --text-3xl: 24px; } }
+@media (max-width: 575.98px) { :root { --text-4xl: 24px; --h3: var(--text-xl); } }
+
+body { font-family: 'Poppins', sans-serif; font-size: var(--text-base); line-height: var(--lh-body); }
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 700 !important;
+  line-height: var(--lh-heading) !important;
+}
+h1, .h1 { font-size: var(--h1) !important; }
+h2, .h2 { font-size: var(--h2) !important; }
+h3, .h3 { font-size: var(--h3) !important; }
+h4, .h4 { font-size: var(--h4) !important; }
+h5, .h5 { font-size: var(--h5) !important; }
+h6, .h6 { font-size: var(--h6) !important; }
+
+p, li, dd, blockquote, figcaption, td, th, .lead { line-height: var(--lh-body) !important; }
+
+/* comfortable line length; centred paragraphs stay centred once capped */
+p { max-width: var(--measure); }
+.text-center p, p.text-center, p.mx-auto,
+[style*="text-align: center"] p, [style*="text-align:center"] p,
+p[style*="text-align: center"], p[style*="text-align:center"] { margin-left: auto; margin-right: auto; }
+
+/* paragraphs whose own inline max-width is wider than the measure (750 / 780 /
+   920px — up to 92 characters a line); the narrower inline caps (560–600px)
+   are already inside it and stay */
+p[style*="max-width: 750px"], p[style*="max-width: 780px"], p[style*="max-width: 920px"] {
+  max-width: var(--measure) !important;
+}
+
+.text-uppercase { letter-spacing: var(--ls-caps) !important; }
+
+/* WhatsApp green carries dark text: white on #25d366 was 1.98:1, this is 9.54:1 */
+.btn-success, .btn-success *,
+.whatsapp-button, .whatsapp-button *,
+.fab-btn.whatsapp, .fab-btn.whatsapp *,
+#ai-agent-btn, #ai-agent-btn * {
+  color: var(--clr-on-success) !important;
+}
+
+/* "What's Included" sits on a gold-tinted box: muted text there was 4.18:1,
+   body text is AA */
+.rules-box .feature-list-condensed li { color: var(--clr-text) !important; }
+
+/* the Facebook embed sits in a light frame: its fallback link is navy (11.57:1) */
+.fb-page a { color: var(--clr-brand) !important; }
+
+/* open FAQ item: the original's color-mix() of gold into the surface, rebuilt
+   from palette values — the raised surface under a 10% accent layer */
+.accordion-button:not(.collapsed) {
+  background-color: var(--clr-surface-raised);
+  background-image: linear-gradient(rgba(var(--clr-accent-rgb), 0.1), rgba(var(--clr-accent-rgb), 0.1));
+}
+
+/* trending cards crop to a near-square from the centre: on the split Kaaba |
+   mosque picture that is the divider, so aim the crop at the Kaaba */
+a.content-card img[src$="trending_taif.jpg"] { object-position: 22% 50%; }
+
+/* Home hero booking tabs. The tab bar sits inside a <nav>, and the original
+   CSS pins EVERY <nav> to the window: inside this box that laid the tab bar
+   over the tab content — it hid the route chips, and all but the last word of
+   each tab's intro line ("Arabia:", "group:"). Put back in the flow. */
+.hero-booking-form-container nav {
+  position: static !important; inset: auto !important; width: auto !important; z-index: auto !important;
+  padding: 0 !important; border: 0 !important; box-shadow: none !important;
+  background: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+}
+/* phones: the three tabs side by side, icon over label, instead of a
+   180px-tall stack */
+@media (max-width: 767.98px) {
+  .hero-booking-form-container .hero-form-tabs { flex-direction: row !important; flex-wrap: nowrap !important; align-items: stretch !important; }
+  .hero-booking-form-container .hero-form-tabs .nav-link {
+    flex: 1 1 0; min-width: 0; margin: 0 !important;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    padding: 10px 4px !important; font-size: var(--text-xs) !important; line-height: 1.25; text-align: center;
+  }
+  .hero-booking-form-container .hero-form-tabs .nav-link i { margin: 0 !important; font-size: var(--text-base); }
+}
+
+/* Who We Are — the four stat cards. The numbers were a fixed 38px / 900 and
+   ran past the card edge on phones; now every card in a row is the same
+   height, number and label are centred as one block, and the number steps
+   down on small screens. */
+.col-6.col-md-3 > div[style*="padding: 22px 14px"] {
+  height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  padding: 24px 16px !important;
+}
+.col-6.col-md-3 > div[style*="padding: 22px 14px"] > div:first-child {
+  font-size: var(--text-4xl) !important; font-weight: 700 !important; line-height: 1.2; letter-spacing: -0.5px;
+}
+.col-6.col-md-3 > div[style*="padding: 22px 14px"] > div:last-child {
+  font-size: var(--text-sm) !important; line-height: 1.4; margin-top: 0 !important; text-wrap: balance;
+}
+@media (max-width: 575.98px) {
+  .col-6.col-md-3 > div[style*="padding: 22px 14px"] { padding: 20px 12px !important; }
+}
+
+/* ------------------------------------------------------------------ navbar
+ * Web convention: logo on the container's left edge, the menu grouped on the
+ * right and ending in the call to action, every item on one centre line, one
+ * height for links and button, spacing on the 4px scale. The selectors carry
+ * `nav.navbar` because the original forces its own values with !important.
+ */
+nav.navbar.navbar-custom { padding: 12px 0 !important; }          /* 48px row → 72px bar */
+nav.navbar-custom > .container { align-items: center; }
+
+nav.navbar-custom .navbar-brand { padding: 0 !important; margin-right: 32px; gap: 12px !important; }
+/* a fixed square box: the logo no longer starts at 0px wide and pushes the
+   brand text sideways when it arrives */
+nav.navbar-custom .navbar-brand img {
+  width: 48px !important; height: 48px !important; max-width: none !important;
+  flex: none; object-fit: contain;
+}
+nav.navbar-custom .navbar-brand .d-flex > span:first-child {
+  font-size: var(--text-lg) !important; line-height: 24px; letter-spacing: 0.5px !important;
+}
+/* the wordmark keeps its own wide tracking: it is part of the logo lockup,
+   not a label — the one exception to --ls-caps */
+nav.navbar-custom .navbar-brand .d-flex > span:last-child {
+  font-size: var(--text-xs) !important; line-height: 16px; letter-spacing: 2px !important;
+}
+
+nav.navbar-custom .navbar-nav .nav-link {
+  font-size: var(--text-sm) !important; line-height: 24px; padding: 8px 12px !important;   /* 40px */
+  border-radius: 8px !important;                                                  /* = the button */
+}
+
+/* dropdowns: same type and grid as the links — 40px rows, 16px sides */
+nav.navbar-custom .dropdown-menu { padding: 8px 0 !important; margin-top: 8px !important; min-width: 240px; }
+nav.navbar-custom .dropdown-item {
+  font-size: var(--text-sm) !important; line-height: 24px; padding: 8px 16px !important;
+}
+nav.navbar-custom .dropdown-divider { margin: 8px 0; }
+nav.navbar-custom .navbar-nav .btn-success {
+  height: 40px; padding: 0 16px !important; gap: 8px !important;
+  font-size: var(--text-sm) !important; line-height: 24px; border-radius: 8px !important;
+}
+nav.navbar-custom .navbar-nav .btn-success i { font-size: var(--text-base) !important; }
+
+/* the section you are in */
+nav.navbar-custom .nav-link.active { color: var(--clr-accent) !important; }
+nav.navbar-custom .dropdown-item[aria-current="page"] { color: var(--clr-accent) !important; }
+
+/* desktop: three columns — logo left, menu centred on the page, WhatsApp
+   right. The collapse wrapper steps aside (display: contents) so its two
+   lists become the middle and right columns. */
+@media (min-width: 992px) {
+  nav.navbar-custom > .container {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+  nav.navbar-custom .navbar-collapse { display: contents !important; }
+  nav.navbar-custom .navbar-brand { justify-self: start; margin-right: 0; }
+  nav.navbar-custom .navbar-nav.me-auto { justify-self: center; margin: 0 !important; gap: 4px; }
+  nav.navbar-custom .navbar-nav.ms-auto { justify-self: end; margin: 0 !important; }
+}
+/* 992–1199px (960px container): tighter links, so the menu still sits on the
+   centre line without touching the logo */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  nav.navbar-custom .navbar-nav.me-auto { gap: 0; }
+  nav.navbar-custom .navbar-nav .nav-link { padding-inline: 8px !important; }
+  nav.navbar-custom .navbar-brand .d-flex > span:first-child { font-size: var(--text-base) !important; }
+}
+
+/* ------------------------------------------------------------------ heroes
+ * One pattern for every inner page: the band starts BELOW the fixed navbar
+ * (the original let the bar sit on top of the title — 7px apart), then
+ * title → subtitle with the same spacing on every page. Photo
+ * backgrounds all get the same overlay so the text always reads.
+ */
+:root { --nav-h: 72px; --hero-pad: 64px; }
+@media (max-width: 991.98px) { :root { --hero-pad: 40px; } }
+
+.page-hero,
+.page-header-minimal {
+  position: relative;
+  display: block !important;
+  padding: calc(var(--nav-h) + var(--hero-pad)) 0 var(--hero-pad) !important;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--clr-border) !important;
+  background-size: cover;
+  background-position: center;
+}
+.page-header-minimal { background: linear-gradient(180deg, var(--clr-surface), var(--clr-bg)); }
+
+/* photo heroes: one overlay, above the photo, below the text */
+.page-hero .hero-overlay { display: none !important; }
+.page-hero .hero-background { z-index: 0; }
+.page-hero::before {
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(var(--clr-bg-rgb), 0.72), rgba(var(--clr-bg-rgb), 0.9)) !important;
+}
+.page-hero[style*="linear-gradient"]::before { display: none; }   /* brings its own */
+.page-hero .container,
+.page-header-minimal .container { position: relative; z-index: 2; }
+/* the original caps this block at 900px but never centres it, so on any
+   container wider than 900px the title and subtitle sat left of centre
+   (198px off at 1600px) */
+.page-hero .hero-content { margin-inline: auto !important; }
+
+.page-hero h1,
+.page-header-minimal h1 {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: var(--h1) !important; line-height: var(--lh-heading) !important; font-weight: 700 !important;
+  letter-spacing: -0.5px !important; text-transform: none !important;
+  color: var(--clr-heading) !important;
+  text-shadow: 0 2px 12px rgba(var(--clr-bg-rgb), 0.6) !important;
+  margin: 0 auto !important;
+  text-wrap: balance;   /* long titles break into even lines, never one orphaned word */
+}
+.page-hero h1 + p,
+.page-hero .hero-content p {
+  font-size: var(--text-lg) !important; line-height: var(--lh-body) !important; font-weight: 400 !important;
+  color: var(--clr-text) !important; text-shadow: none !important;
+  max-width: 60ch; margin: 16px auto 0 !important;
+  text-wrap: pretty;
+}
+.page-hero .badge { margin-bottom: 16px !important; }   /* the fleet page's eyebrow */
+.page-hero .container.py-4 { padding-top: 0 !important; padding-bottom: 0 !important; }  /* /fleet: no extra 24px */
+
+@media (max-width: 767.98px) {
+  .page-hero h1 + p, .page-hero .hero-content p { font-size: var(--text-base) !important; }
+}
+
+/* mobile menu (a padded card in the original CSS): every row as wide as the
+   WhatsApp button, 44px touch targets */
+@media (max-width: 991.98px) {
+  nav.navbar-custom .navbar-toggler {
+    width: 44px; height: 44px; padding: 0 !important;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  nav.navbar-custom .navbar-collapse { padding: 8px 0 4px; }
+  nav.navbar-custom .navbar-nav { padding: 0; margin: 0 !important; }
+  nav.navbar-custom .navbar-nav .nav-link { padding: 10px 12px !important; }
+  nav.navbar-custom .navbar-nav.ms-auto { margin-top: 8px !important; }
+  nav.navbar-custom .navbar-nav .btn-success { width: 100%; height: 44px; justify-content: center; }
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>design audit harness</title>
+  <style>
+    body { margin: 0; overflow: hidden; font: 12px monospace; }
+    iframe { border: 0; position: absolute; top: 0; left: 0; }
+    #log { position: fixed; right: 0; bottom: 0; background: #fff; max-height: 40vh; overflow: auto; z-index: 9; }
+  </style>
+</head>
+<body>
+  <pre id="log"></pre>
+  <script>
+    /*
+     * Loads every page in a same-origin iframe at the requested width, runs the
+     * audit probe inside it, and POSTs the result to /__save/<width>__<page>.
+     * Usage: /_audit/harness.html?w=1280   (optionally &only=/,/fleet)
+     */
+    (async () => {
+      const qs = new URLSearchParams(location.search);
+      const W = +(qs.get('w') || 1280);
+      const only = qs.get('only');
+      const log = (m) => { document.getElementById('log').textContent += m + '\n'; };
+      const pages = await (await fetch('/_audit/pages.json')).json();
+      const probe = await (await fetch('/_audit/probe.js')).text();
+      const list = only ? pages.filter((p) => only.split(',').includes(p)) : pages;
+
+      for (const route of list) {
+        const name = W + '__' + (route === '/' ? 'home' : route.slice(1).replace(/\//g, '__'));
+        const f = document.createElement('iframe');
+        f.style.width = W + 'px';
+        f.style.height = '900px';
+        document.body.appendChild(f);
+        const loaded = new Promise((r) => { f.onload = r; });
+        f.src = route;
+        await Promise.race([loaded, new Promise((r) => setTimeout(r, 20000))]);
+        // the replicated pages load their original scripts in sequence after mount
+        await new Promise((r) => setTimeout(r, 2500));
+        let result;
+        try {
+          result = await f.contentWindow.eval(probe);
+        } catch (e) {
+          result = { error: String(e && e.stack || e) };
+        }
+        result.route = route;
+        result.width = W;
+        await fetch('/__save/' + encodeURIComponent(name), { method: 'POST', body: JSON.stringify(result) });
+        log('ok ' + name);
+        f.remove();
+      }
+      await fetch('/__save/' + W + '__DONE', { method: 'POST', body: JSON.stringify({ done: true, n: list.length }) });
+      log('DONE ' + list.length);
+    })();
+  </script>
+</body>
+</html>

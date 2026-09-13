@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "replica", "runtimeExecutable": "npm", "runtimeArgs": ["run", "start"], "port": 3100 }
+  ]
+}

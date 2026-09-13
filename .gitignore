@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# build output (regenerate with `npm run build`)
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# local tooling scratch
+.pdf-chrome-profile/
+_audit/results/
+_audit/*.json
+_audit/*.txt
+_polish/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
