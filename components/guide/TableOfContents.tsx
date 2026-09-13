@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 
 /**
  * The chapter bar: "On this page" and every chapter in one row, sticking under
- * the site header as you read. It highlights whichever chapter is in view and
- * keeps that one scrolled into sight in the bar.
+ * the site header as you read — on phones as well as desktop. It highlights
+ * whichever chapter is in view and keeps that one scrolled into sight.
  *
  * One of only two client components in the guide. Uses IntersectionObserver
  * rather than a scroll handler so it does no work between intersections, and
@@ -22,6 +22,7 @@ export default function TableOfContents({
   label: string;
 }) {
   const [active, setActive] = useState<string | null>(null);
+  const bar = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLOListElement>(null);
 
   useEffect(() => {
@@ -46,6 +47,25 @@ export default function TableOfContents({
     return () => io.disconnect();
   }, [items]);
 
+  // Stick directly under the site header, whatever height it is right now:
+  // 72px on desktop, 65px on a phone, taller if the brand ever wraps. Measured
+  // rather than assumed, so the bar never overlaps the header or floats below it.
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>('nav.navbar');
+    if (!header || !bar.current) return undefined;
+    const apply = () => {
+      bar.current?.style.setProperty('--tocbar-top', `${Math.round(header.getBoundingClientRect().height)}px`);
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(header);
+    window.addEventListener('resize', apply);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', apply);
+    };
+  }, []);
+
   // a chapter further along the bar is scrolled into sight as it becomes active
   useEffect(() => {
     if (!active || !list.current) return;
@@ -54,7 +74,7 @@ export default function TableOfContents({
   }, [active]);
 
   return (
-    <div role="navigation" aria-label={label} className="guide-tocbar">
+    <div role="navigation" aria-label={label} className="guide-tocbar" ref={bar}>
       <div className="guide-container guide-tocbar__inner">
         <p className="guide-tocbar__label">
           <i className="fas fa-list-ul" aria-hidden="true" />

@@ -333,7 +333,7 @@
 
 .guide-tocbar {
   position: sticky;
-  top: var(--nav-h, 72px);
+  top: var(--tocbar-top, var(--nav-h, 72px));   /* the header measures itself; see TableOfContents.tsx */
   z-index: 20;
   background: var(--clr-surface);
   border-block: 1px solid var(--clr-border);
