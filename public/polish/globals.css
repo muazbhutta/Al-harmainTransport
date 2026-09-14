@@ -208,20 +208,31 @@ nav.navbar-custom .navbar-nav .btn-success {
 }
 nav.navbar-custom .navbar-nav .btn-success i { font-size: var(--text-base) !important; }
 
-/* quick link to the Ziyarat guide, beside the menu button on phones and
-   tablets (on desktop the guide has its own item in the menu) */
+/* Quick link to the Ziyarat guide, beside the menu button on phones and
+   tablets (on desktop the guide has its own item in the menu).
+
+   It is drawn as the menu button twin - same box, same faint gold wash, same
+   near-white glyph - so the two read as one pair rather than a gold blob next
+   to a plain button. Gold is kept for hover and focus.
+
+   The auto start margin is what keeps them together: the navbar container is
+   justify-content: space-between, which would otherwise share the free space
+   out between the logo, this and the menu button and leave a 32px hole. */
 nav.navbar-custom .nav-guide-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; margin-inline-end: 8px;
+  width: 44px; height: 44px;                         /* = .navbar-toggler */
+  margin-inline-start: auto; margin-inline-end: 8px;
   border: 1px solid var(--clr-border); border-radius: 8px;
-  color: var(--clr-accent) !important;
+  background: rgba(var(--clr-accent-rgb), 0.1);      /* = .navbar-toggler */
+  color: var(--clr-heading) !important;              /* = the menu bars */
   font-size: var(--text-lg); text-decoration: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 nav.navbar-custom .nav-guide-btn:hover,
 nav.navbar-custom .nav-guide-btn:focus-visible {
-  background: rgba(var(--clr-accent-rgb), 0.12);
+  background: rgba(var(--clr-accent-rgb), 0.2);
   border-color: var(--clr-accent);
+  color: var(--clr-accent) !important;
 }
 
 
