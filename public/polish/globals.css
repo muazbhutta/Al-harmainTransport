@@ -373,6 +373,26 @@ nav.navbar-custom .dropdown-item[aria-current="page"] { color: var(--clr-accent)
   justify-content: center;
 }
 
+/* --------------------------------------------- floating buttons vs pop-ups
+   The WhatsApp and Facebook circles (z-index 9999), the AI agent button
+   (10050) and its chat window (10060) all sit above a Bootstrap modal
+   (1055), so they covered the booking pop-up's own Cancel and Book buttons.
+
+   Bootstrap puts .modal-open on <body> for as long as any modal is open and
+   takes it off again on close, so this hides them for the pop-up and brings
+   them back by itself — no script, and it holds for every modal on the site,
+   not just the booking ones.
+
+   visibility rather than display: none, so an open chat keeps its scroll
+   position and its conversation while the pop-up is in front. */
+body.modal-open .fab-container,
+body.modal-open #ai-agent-btn,
+body.modal-open #ai-chat-window {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* ---------------------------------------------- phone header height (last)
    On phones the header is 65px, not 72px. This has to come after the :root
    block in the heroes section, or that later declaration wins. */
