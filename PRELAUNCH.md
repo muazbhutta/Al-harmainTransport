@@ -191,9 +191,14 @@ Sulah Hudaibiyah"). Shortening means renaming the service, which is your
 decision, not mine. The distinctive part comes first, so Google truncates only
 the brand.
 
-**6. The chat agent lists `info@ALHARMAINTRANSPORT.com`**, while the footer and
-the rest of the site use `alharmaintransportksa@gmail.com` (94 places against 1).
-If that first address does not receive mail, enquiries sent to it are being lost.
+**6. Email — fixed.** The site carried two addresses, neither of them right:
+`alharmaintransportksa@gmail.com` in 186 places and `info@ALHARMAINTRANSPORT.com`
+in the chat agent. The owner confirmed the correct address is
+**info@alharmainumrahtransport.com**, and it is now the only one on the site —
+94 rewritten at build time by `emailIn()` in `_polish.mjs`, the rest coming from
+one constant in `lib/whatsapp.mjs`. 177 `mailto:` links, the footer, the contact
+page, the chat agent and the LocalBusiness schema all agree. Verified: no trace
+of either old address anywhere in `out/`.
 
 **7. `/blog` has three teaser cards and no articles.** The posts were never part
 of the export. The cards now link to the matching guide chapters, which is

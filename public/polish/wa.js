@@ -18,6 +18,9 @@
  * run in Node, in Next.js and in the browser.
  */
 
+/** The company's own address. The export carried two others, both dead. */
+const EMAIL = 'info@alharmainumrahtransport.com';
+
 const WHATSAPP_NUMBER = '966565476113';
 const SITE_URL = 'https://alharmainumrahtransport.com';
 

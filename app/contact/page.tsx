@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import JsonLd from '../../components/JsonLd';
 import type { CSSProperties } from 'react';
 
 import { SiteNav, SiteFooter } from '../../components/SiteChrome';
-import { waLink, pageUrl } from '../../lib/whatsapp.mjs';
+import { waLink, pageUrl, EMAIL } from '../../lib/whatsapp.mjs';
 import { SITE_URL } from '../sitemap';
 
 /**
@@ -39,7 +40,6 @@ export const metadata: Metadata = {
 };
 
 const PHONES = ['+966 56 547 6113', '+966 59 678 9290'];
-const EMAIL = 'alharmaintransportksa@gmail.com';
 const CITIES = ['Makkah', 'Madinah', 'Jeddah', 'Taif'];
 
 const card: CSSProperties = {
@@ -153,10 +153,7 @@ export default function ContactPage() {
 
       <SiteFooter route="/contact" />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+<JsonLd data={{
             '@context': 'https://schema.org',
             '@type': 'ContactPage',
             name: 'Contact AL HARMAIN UMRAH TRANSPORT',
@@ -168,9 +165,7 @@ export default function ContactPage() {
               telephone: PHONES.map((phone) => phone.split(' ').join('')),
               areaServed: CITIES,
             },
-          }),
-        }}
-      />
+          }} />
     </>
   );
 }

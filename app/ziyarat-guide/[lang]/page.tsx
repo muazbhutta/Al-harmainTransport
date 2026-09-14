@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import JsonLd from '../../../components/JsonLd';
 import { notFound } from 'next/navigation';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -243,10 +244,7 @@ export default async function ZiyaratGuideLangPage({ params }: Params) {
       <SiteFooter route={`/ziyarat-guide/${lang}`} />
 
       {/* Article schema, per language. */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+<JsonLd data={{
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: guide.title,
@@ -260,9 +258,7 @@ export default async function ZiyaratGuideLangPage({ params }: Params) {
               name: 'AL HARMAIN UMRAH TRANSPORT',
               logo: { '@type': 'ImageObject', url: `${SITE_URL}/img/LOGO.png` },
             },
-          }),
-        }}
-      />
+          }} />
     </div>
   );
 }

@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { POLISH, polished } from '../lib/polish';
 import { SITE_URL } from './sitemap';
+import { EMAIL } from '../lib/whatsapp.mjs';
+import JsonLd from '../components/JsonLd';
 
 /**
  * metadataBase turns the relative canonical and og:url that lib/page.ts sets
@@ -31,7 +33,7 @@ const BUSINESS = {
   logo: `${SITE_URL}/img/LOGO.png`,
   image: `${SITE_URL}/img/kaaba_hero.jpg`,
   telephone: '+966565476113',
-  email: 'alharmaintransportksa@gmail.com',
+  email: EMAIL,
   address: { '@type': 'PostalAddress', addressCountry: 'SA' },
   areaServed: ['Makkah', 'Madinah', 'Jeddah', 'Taif'].map((name) => ({ '@type': 'City', name })),
   sameAs: ['https://www.facebook.com/ALHARMAINUMRAHTAXI'],
@@ -85,10 +87,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(BUSINESS) }}
-        />
+        <JsonLd data={BUSINESS} />
       </body>
     </html>
   );

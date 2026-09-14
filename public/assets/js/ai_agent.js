@@ -630,7 +630,7 @@
                 📞 <strong>Direct Contact & 24/7 Support:</strong><br>
                 • <strong>Phone / WhatsApp:</strong> <a href="tel:+966596789290" style="color:#da9a28; text-decoration:underline;">+966 59 678 9290</a><br>
                 • <strong>Secondary Line:</strong> +966 56 547 6113<br>
-                • <strong>Email:</strong> info@ALHARMAINTRANSPORT.com<br>
+                • <strong>Email:</strong> info@alharmainumrahtransport.com<br>
                 • <strong>Operating Hours:</strong> 24 Hours / 7 Days a week<br><br>
                 <a href="https://wa.me/966565476113" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Open WhatsApp Chat</a>
             `;

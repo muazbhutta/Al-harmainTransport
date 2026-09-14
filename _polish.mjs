@@ -19,7 +19,7 @@
  */
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, posix, relative, sep } from 'node:path';
-import { pageUrl, waLink, waMessage } from './lib/whatsapp.mjs';
+import { EMAIL, pageUrl, waLink, waMessage } from './lib/whatsapp.mjs';
 
 /* ------------------------------------------------------------- palette */
 
@@ -777,6 +777,37 @@ export function deadLinks(html) {
   return html;
 }
 
+/* ------------------------------------------------------------------ email */
+
+/**
+ * One address, everywhere.
+ *
+ * The export carried two, neither of them right: alharmaintransportksa@gmail.com
+ * in 186 places (footer, contact blocks, every page) and
+ * info@ALHARMAINTRANSPORT.com in one (the chat agent). Mail sent to either was
+ * going nowhere the company reads, so every enquiry by email was being lost.
+ *
+ * Rewritten at build time rather than in the source, for the same reason the
+ * WhatsApp links are: one place decides, and re-exporting the original site
+ * cannot quietly reintroduce the old address.
+ */
+const OLD_EMAILS = [
+  'alharmaintransportksa@gmail.com',
+  'info@alharmaintransport.com',
+];
+
+export let emailCount = 0;
+
+export function emailIn(text) {
+  if (typeof text !== 'string') return text;
+  for (const old of OLD_EMAILS) {
+    // case-insensitive: the agent wrote its copy in capitals
+    const re = new RegExp(old.split('.').join('[.]'), 'gi');
+    text = text.replace(re, () => { emailCount += 1; return EMAIL; });
+  }
+  return text;
+}
+
 /* -------------------------------------------------------- image dimensions */
 
 /**
@@ -938,7 +969,7 @@ async function main() {
     ...(await readdir('public/page-js')).filter((f) => f.endsWith('.js')).map((f) => `/page-js/${f}`),
   ];
   for (const url of scripts) {
-    await write(join('public/polish', url), patchWhatsApp(url, transform(fixMojibake(await readFile(join('public', url), 'utf8'), url), 'js', url)));
+    await write(join('public/polish', url), emailIn(patchWhatsApp(url, transform(fixMojibake(await readFile(join('public', url), 'utf8'), url), 'js', url))));
   }
 
   // measure every image once, so addImageDims can stamp width/height
@@ -971,7 +1002,7 @@ async function main() {
       data.nav = addGuideIcon(fixLogo(markCurrent(data.nav, '/ziyarat-guide'))); // the chrome is only used by the guide
       // WhatsApp links are marked data-wa; SiteChrome re-points them at each guide page
       for (const k of Object.keys(data)) data[k] = whatsappIn(data[k], '/ziyarat-guide');
-      for (const k of Object.keys(data)) data[k] = deadLinks(addImageDims(data[k]));
+      for (const k of Object.keys(data)) data[k] = emailIn(deadLinks(addImageDims(data[k])));
       collectChromeText(data);
     } else if (typeof data.body === 'string') {
       // metadata is plain text: repair it, and undo the one extra level of
@@ -985,7 +1016,7 @@ async function main() {
       if (data.route === '/who-we-are') data.body = fleetPhotos(data.body);
       if (data.route === '/book-now') data.body = bookNowHeading(data.body);
       if (data.route === '/customer-faqs') data.faq = extractFaq(data.body);
-      data.body = deadLinks(addImageDims(data.body));
+      data.body = emailIn(deadLinks(addImageDims(data.body)));
       seoMeta(data);   // a title and description of its own, from the page's own words
     }
     await write(join('content-polish', f), JSON.stringify(data));
@@ -1007,6 +1038,7 @@ async function main() {
     Object.fromEntries(Object.entries(mojibakeFixes).map(([k, s]) => [k, [...s].sort()])), null, 1));
   await write('_polish/type.json', JSON.stringify(typeStats, null, 1));
   console.log(`type: ${Object.values(typeStats.sizes).reduce((a, b) => a + b, 0)} font sizes onto the scale, ${Object.values(typeStats.weights).reduce((a, b) => a + b, 0)} weights changed, ${typeStats.caps} uppercase rules given one letter-spacing`);
+  console.log(`email addresses corrected: ${emailCount}`);
   console.log(`garbled sequences repaired:${Object.keys(mojibakeFixes).length} kinds, in ${new Set(Object.values(mojibakeFixes).flatMap((s) => [...s])).size} places`);
   const total = Object.values(stats.files).reduce((a, f) => a + f.replaced, 0);
   const skipped = Object.values(stats.files).reduce((a, f) => a + f.skipped, 0);
