@@ -19,6 +19,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "sharp": "^0.33.5",
+    "subset-font": "^2.7.0",
     "typescript": "^5.6.3"
   }
 }

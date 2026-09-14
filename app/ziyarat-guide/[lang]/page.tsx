@@ -14,6 +14,14 @@ import { locationSlotsForBlocks, getPlace } from '../../../data/ziyarat/places';
 import { SITE_URL } from '../../sitemap';
 import '../../guide.css';
 
+/** Trim to a whole word so a search result is not cut mid-word. */
+const clamp = (text: string, max: number) => {
+  const t = text.replace(/s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(' ')) + '…';
+};
+
 type Params = { params: Promise<{ lang: string }> };
 
 export function generateStaticParams() {
@@ -39,7 +47,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   return {
     title: { absolute: `${guide.title} | AL HARMAIN UMRAH TRANSPORT` },
-    description: guide.intro.replace(/\s+/g, ' ').trim().slice(0, 300),
+    description: clamp(guide.intro, 158),
     keywords: s(t.guide, 'keywords', 'Ziyarat guide, Umrah guide, Hajj guide, Makkah, Madinah'),
     alternates: {
       canonical: `/ziyarat-guide/${lang}`,
@@ -50,7 +58,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     },
     openGraph: {
       title: guide.title,
-      description: guide.intro.slice(0, 200),
+      description: clamp(guide.intro, 158),
       url: `${SITE_URL}/ziyarat-guide/${lang}`,
       locale: meta.hreflang,
       type: 'article',

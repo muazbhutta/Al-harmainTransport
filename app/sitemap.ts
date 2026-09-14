@@ -3,6 +3,7 @@ import { categories } from '../data/categories';
 import { services } from '../data/services';
 import { vehicles } from '../data/vehicles';
 import { standalonePages } from '../data/pages';
+import { guideLangs } from '../data/ziyarat/langs';
 
 /**
  * Change this at launch to the site's real domain.
@@ -25,6 +26,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     at('/', 1),
     at('/who-we-are', 0.7),
+    at('/contact', 0.8),
+    // the Ziyarat guide, one entry per language; the print editions are
+    // noindex and stay out
+    ...guideLangs.map((l) => at(`/ziyarat-guide/${l.code}`, l.code === 'en' ? 0.9 : 0.7)),
     at('/fleet', 0.8),
     ...categories.map((c) => at(`/services/${c.slug}`, 0.8)),
     ...services.map((s) => at(`/services/${s.slug}`, 0.7)),

@@ -18,7 +18,7 @@
  * Usage: node _polish.mjs        (re-run after `npm run extract`)
  */
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
-import { dirname, join, posix } from 'node:path';
+import { dirname, join, posix, relative, sep } from 'node:path';
 import { pageUrl, waLink, waMessage } from './lib/whatsapp.mjs';
 
 /* ------------------------------------------------------------- palette */
@@ -717,6 +717,202 @@ function patchWhatsApp(url, text) {
   return text;
 }
 
+/**
+ * /book-now had no h1 at all — its own heading, "Our Transport Services", was
+ * marked up as an h3. A page with no h1 tells a crawler nothing about what it
+ * is, so the heading is promoted. The `h3` class keeps it exactly the size it
+ * was: globals.css marks both rules !important, and a class outranks an
+ * element selector, so nothing moves on screen.
+ */
+export function bookNowHeading(html) {
+  return html.replace(
+    /<h3([^>]*)>(\s*Our Transport Services\s*)<\/h3>/i,
+    (m, attrs, text) => `<h1${attrs} class="h3">${text}</h1>`,
+  );
+}
+
+/**
+ * The FAQ page's questions, in the form Google reads.
+ *
+ * They are lifted from the page's own accordion, so the structured data and
+ * the visible text cannot disagree — which is what Google requires of FAQ
+ * markup, and what gets a site penalised when it is done any other way.
+ */
+export function extractFaq(html) {
+  const pairs = [];
+  const re = /<button[^>]*accordion-button[^>]*>([\s\S]*?)<\/button>[\s\S]{0,400}?<div[^>]*accordion-body[^>]*>([\s\S]*?)<\/div>/gi;
+  for (const m of html.matchAll(re)) {
+    const q = plainText(m[1]);
+    const a = plainText(m[2]);
+    if (q && a) pairs.push({ q, a });
+  }
+  return pairs;
+}
+
+/**
+ * Three links in the original point at pages that do not exist here.
+ *
+ *  - the footer's "Contact Us" went to /contact on all 57 pages. That page now
+ *    exists (app/contact), so the link is left alone and simply works.
+ *  - the cart drawer's "Checkout" went to /checkout, which was never built and
+ *    which no script handles: a dead end on 29 pages. Every booking on this
+ *    site is completed on WhatsApp, so that is where it goes.
+ *  - the blog's three "Read More" links went to post.php?slug=…, the original's
+ *    PHP page. The articles themselves were never part of the export, but the
+ *    Ziyarat guide covers those exact three subjects in depth, so each card
+ *    points at the matching chapter rather than at nothing.
+ */
+const BLOG_CHAPTER = [
+  ['makkah', '#makkah'],
+  ['madinah', '#madinah'],
+  ['taif', '#taif'],
+];
+
+export function deadLinks(html) {
+  html = html.replace(/href="\/checkout"/g, `href="${waLink({ type: 'general', url: pageUrl('/book-now') })}" target="_blank" rel="noopener"`);
+  html = html.replace(/href="post\.php\?slug=([^"]*)"/g, (m, slug) => {
+    const hit = BLOG_CHAPTER.find(([word]) => slug.includes(word));
+    return `href="/ziyarat-guide/en${hit ? hit[1] : ''}"`;
+  });
+  return html;
+}
+
+/* -------------------------------------------------------- image dimensions */
+
+/**
+ * width and height on every local <img>, so the browser reserves the right box
+ * before the bytes arrive.
+ *
+ * 46 of the 47 images on the home page carried neither, so every one of them
+ * resized the page as it loaded — the layout shift that Core Web Vitals
+ * measures. The values are each file's true intrinsic size, so nothing moves:
+ * an attribute that matches the natural size cannot change how the image
+ * renders, it only lets the browser hold the space.
+ *
+ * Filled from a scan done once per build (imageSizes), not per page.
+ */
+export const imageSizes = new Map();
+
+export function addImageDims(html) {
+  return html.replace(/<img\b[^>]*>/gi, (tag) => {
+    if (/\bwidth=/i.test(tag) || /\bheight=/i.test(tag)) return tag;
+    const src = (tag.match(/\bsrc="([^"]+)"/i) || [])[1];
+    if (!src || /^(https?:|data:)/i.test(src)) return tag;          // not ours to measure
+    const size = imageSizes.get(decodeURIComponent(src.replace(/^\//, '')));
+    if (!size) return tag;
+    return tag.replace(/<img\b/i, `<img width="${size.w}" height="${size.h}"`);
+  });
+}
+
+/* --------------------------------------------------------------------- SEO */
+
+/**
+ * A title and a description of its own for every page.
+ *
+ * The original ships ONE 247-character description on all 46 pages — the same
+ * sentence for the Camry, the refund policy and every route — and bare titles
+ * like "Toyota Camry" carrying no brand. Google drops duplicate descriptions
+ * and writes its own snippet, so every page was throwing its snippet away.
+ *
+ * Nothing here is invented. The description is the page's own opening
+ * paragraph, trimmed to fit a search result; a page whose lead is very short
+ * gets one factual clause about the company added, with no claim or number in
+ * it. The title is the page's own name plus the brand.
+ */
+const STOCK_DESC = /^AL HARMAIN UMRAH TRANSPORT provides premium, reliable, and comfortable/i;
+const BRAND = 'AL HARMAIN UMRAH TRANSPORT';
+const BRAND_CLAUSE = ' Al Harmain Umrah Transport — private Hajj and Umrah transfers across Makkah, Madinah, Jeddah and Taif.';
+
+const plainText = (html) => html
+  .replace(/<[^>]+>/g, ' ')
+  .replace(/&nbsp;/g, ' ')
+  .replace(/&amp;/g, '&')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+/** Trim to a whole word, never past `max`. */
+function clampText(text, max) {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const at = cut.lastIndexOf(' ');
+  return (at > max * 0.6 ? cut.slice(0, at) : cut).replace(/[ ,;:.—-]+$/, '') + '…';
+}
+/** Text that appears in the header, footer or cart drawer — that is, on every
+ *  page. A description taken from there would be shared by all of them, which
+ *  is the duplicate this whole step exists to remove. */
+export const chromeText = new Set();
+
+export function collectChromeText(chrome) {
+  for (const html of Object.values(chrome)) {
+    for (const m of String(html).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)) {
+      const t = plainText(m[1]);
+      if (t) chromeText.add(t);
+    }
+  }
+}
+
+/**
+ * Two pages carry no prose of their own — one is a filterable list, the other
+ * is all accordions — so there is no paragraph to lift. These say what the
+ * page holds, taken from its own section headings.
+ */
+const DESCRIPTION = {
+  '/book-now': 'Browse Al Harmain Umrah Transport services by category and city, open the details of any trip, choose your vehicle and confirm it on WhatsApp.',
+  '/customer-faqs': 'Answers on bookings and reservations, payments and pricing, service and vehicles, and the customer terms for Al Harmain Umrah Transport.',
+};
+
+export const seoLog = [];
+
+export function seoMeta(data) {
+  const was = { title: data.title, description: data.description };
+
+  // "Book Transport | MCOM" — MCOM is the template the original was built from
+  let title = (data.title || '').replace(/\s*\|\s*MCOM\s*$/i, '').trim();
+  if (title && !/AL HARMAIN/i.test(title)) {
+    const full = `${title} | ${BRAND}`;
+    title = full.length <= 60 ? full : `${title} | Al Harmain`;
+  }
+  // A title the original already branded can still overrun what a result
+  // shows; the short form of the name buys 16 characters back.
+  if (title.length > 60 && title.includes(BRAND)) {
+    title = title.replace(`| ${BRAND}`, '| Al Harmain').replace(BRAND, 'Al Harmain');
+  }
+  if (title) data.title = title;
+
+  if (DESCRIPTION[data.route]) {
+    data.description = DESCRIPTION[data.route];
+  } else if (!data.description || STOCK_DESC.test(data.description)) {
+    // The stock sentence is a fair description of the business itself, so the
+    // home page keeps it (trimmed); it is only its use on all 46 pages that
+    // was the problem.
+    const company = STOCK_DESC.test(data.description || '') ? data.description : '';
+    // A real sentence beats a sub-heading that happens to sit in a <p>, so a
+    // substantial paragraph wins when the page has one.
+    // The footer is on every page, so a paragraph taken from it would be
+    // shared by every page — exactly the duplicate this is fixing.
+    const paras = [...String(data.body).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+      .map((m) => plainText(m[1]))
+      .filter((t) => t.length > 45 && !chromeText.has(t));
+    const lead = paras.find((t) => t.length >= 90) || paras[0];
+    // A lead that only tells the visitor how to work the page describes
+    // nothing to a searcher; the company sentence serves them better.
+    const isUi = lead && /^(find|start by|filter|choose|select|click|use the)\b/i.test(lead);
+    const chosen = data.route === '/' || !lead || isUi ? (company || lead) : lead;
+    if (chosen) data.description = clampText(chosen.length < 90 ? chosen + BRAND_CLAUSE : chosen, 158);
+  } else {
+    data.description = clampText(data.description, 158);
+  }
+
+  seoLog.push({
+    route: data.route,
+    title: data.title,
+    titleLen: (data.title || '').length,
+    description: data.description,
+    descLen: (data.description || '').length,
+    rewritten: was.title !== data.title || was.description !== data.description,
+  });
+}
+
 /* ----------------------------------------------------------------- run */
 
 async function write(path, data) {
@@ -745,6 +941,26 @@ async function main() {
     await write(join('public/polish', url), patchWhatsApp(url, transform(fixMojibake(await readFile(join('public', url), 'utf8'), url), 'js', url)));
   }
 
+  // measure every image once, so addImageDims can stamp width/height
+  {
+    const { default: sharp } = await import('sharp');
+    const walkImages = async (dir) => {
+      for (const e of await readdir(dir, { withFileTypes: true })) {
+        const p = join(dir, e.name);
+        if (e.isDirectory()) { await walkImages(p); continue; }
+        if (!/\.(png|jpe?g|gif|webp|avif)$/i.test(e.name)) continue;
+        try {
+          const { width, height } = await sharp(p).metadata();
+          if (width && height) {
+            imageSizes.set(relative('public', p).split(sep).join('/'), { w: width, h: height });
+          }
+        } catch { /* unreadable image: leave it without dimensions */ }
+      }
+    };
+    await walkImages('public');
+    console.log(`images measured: ${imageSizes.size}`);
+  }
+
   // page markup
   await mkdir('content-polish', { recursive: true });
   for (const f of await readdir('content')) {
@@ -755,6 +971,8 @@ async function main() {
       data.nav = addGuideIcon(fixLogo(markCurrent(data.nav, '/ziyarat-guide'))); // the chrome is only used by the guide
       // WhatsApp links are marked data-wa; SiteChrome re-points them at each guide page
       for (const k of Object.keys(data)) data[k] = whatsappIn(data[k], '/ziyarat-guide');
+      for (const k of Object.keys(data)) data[k] = deadLinks(addImageDims(data[k]));
+      collectChromeText(data);
     } else if (typeof data.body === 'string') {
       // metadata is plain text: repair it, and undo the one extra level of
       // escaping four titles carry (the tab showed "Ziyarat &amp; Return")
@@ -765,6 +983,10 @@ async function main() {
       data.body = vehicleButton(whatsappIn(data.body, data.route), data.route);
       if (data.route === '/') data.body = heroEdits(categoryGrid(data.body));
       if (data.route === '/who-we-are') data.body = fleetPhotos(data.body);
+      if (data.route === '/book-now') data.body = bookNowHeading(data.body);
+      if (data.route === '/customer-faqs') data.faq = extractFaq(data.body);
+      data.body = deadLinks(addImageDims(data.body));
+      seoMeta(data);   // a title and description of its own, from the page's own words
     }
     await write(join('content-polish', f), JSON.stringify(data));
   }

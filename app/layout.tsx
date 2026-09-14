@@ -1,5 +1,47 @@
 import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
 import { POLISH, polished } from '../lib/polish';
+import { SITE_URL } from './sitemap';
+
+/**
+ * metadataBase turns the relative canonical and og:url that lib/page.ts sets
+ * into the absolute URLs those tags must carry.
+ */
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+};
+
+/**
+ * Who the business is, in the form a search engine reads.
+ *
+ * Every fact here is already published on the site — the two numbers and the
+ * address in the footer, the cities in the services. Nothing is asserted that
+ * the site does not say: no licence number, no rating, no price range, no
+ * street address, because none of those appear anywhere in the content.
+ */
+const BUSINESS = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${SITE_URL}/#business`,
+  name: 'AL HARMAIN UMRAH TRANSPORT',
+  description:
+    'Private Hajj and Umrah transport across Makkah, Madinah, Jeddah and Taif — '
+    + 'sedans, SUVs, minivans, coasters and coaches with professional drivers.',
+  url: SITE_URL,
+  logo: `${SITE_URL}/img/LOGO.png`,
+  image: `${SITE_URL}/img/kaaba_hero.jpg`,
+  telephone: '+966565476113',
+  email: 'alharmaintransportksa@gmail.com',
+  address: { '@type': 'PostalAddress', addressCountry: 'SA' },
+  areaServed: ['Makkah', 'Madinah', 'Jeddah', 'Taif'].map((name) => ({ '@type': 'City', name })),
+  sameAs: ['https://www.facebook.com/ALHARMAINUMRAHTAXI'],
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '00:00',
+    closes: '23:59',
+  },
+};
 
 /**
  * Root layout.
@@ -25,7 +67,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <link rel="icon" type="image/png" href="/img/favicon.png" />
         <link rel="shortcut icon" type="image/png" href="/img/favicon.png" />
-        <link rel="apple-touch-icon" href="/img/favicon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        {/* the address bar matches the page, rather than flashing white */}
+        <meta name="theme-color" content="#0c1119" />
 
         {/* Order matters — see the note above. */}
         <link rel="stylesheet" href="/vendor/fonts/fonts.css" />
@@ -38,7 +83,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* the navbar logo is the first image on every page */}
         {POLISH && <link rel="preload" as="image" href="/img/LOGO.png" fetchPriority="high" />}
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(BUSINESS) }}
+        />
+      </body>
     </html>
   );
 }

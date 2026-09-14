@@ -1,0 +1,12 @@
+{
+  "name": "AL HARMAIN UMRAH TRANSPORT",
+  "short_name": "Al Harmain",
+  "description": "Private Hajj and Umrah transport across Makkah, Madinah, Jeddah and Taif.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c1119",
+  "theme_color": "#0c1119",
+  "icons": [
+    { "src": "/img/favicon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}

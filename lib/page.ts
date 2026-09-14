@@ -4,6 +4,13 @@ import type { Metadata } from 'next';
 import type { PageScript } from '../app/PageScripts';
 import { contentDir } from './polish';
 
+
+/** Shared across every page's social tags. */
+const SITE_NAME = 'AL HARMAIN UMRAH TRANSPORT';
+const OG_IMAGE = '/img/kaaba_hero.jpg';
+const OG_IMAGE_W = 1024;
+const OG_IMAGE_H = 676;
+
 export type PageContent = {
   slug: string;
   route: string;
@@ -13,6 +20,8 @@ export type PageContent = {
   /** Body markup, preserved verbatim from the original. */
   body: string;
   scripts: PageScript[];
+  /** Question/answer pairs, only on the FAQ page (see extractFaq in _polish.mjs). */
+  faq?: { q: string; a: string }[];
 };
 
 /**
@@ -25,14 +34,39 @@ export async function loadPage(slug: string): Promise<PageContent> {
 }
 
 /**
- * Carries the original page's title, description and keywords across unchanged.
- * `title.absolute` is used so Next never appends a template to it — the original
- * titles are exactly what they are.
+ * The page's own title and description, plus the tags every page needs and the
+ * original had on none of them: a canonical URL, Open Graph and a Twitter card.
+ *
+ * Without a canonical, the same page reached by a different URL looks like a
+ * separate page to a crawler. Without Open Graph, a link shared on WhatsApp —
+ * how most of this company's guests arrive — unfurls as a bare grey box.
+ *
+ * Titles and descriptions are made unique per page by seoMeta() in _polish.mjs.
  */
 export function metadataFor(page: PageContent): Metadata {
+  const title = page.title ?? '';
+  const description = page.description ?? undefined;
+  const url = page.route || '/';
+
   return {
-    title: { absolute: page.title ?? '' },
-    ...(page.description ? { description: page.description } : {}),
+    title: { absolute: title },
+    ...(description ? { description } : {}),
     ...(page.keywords ? { keywords: page.keywords } : {}),
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      ...(description ? { description } : {}),
+      url,
+      siteName: SITE_NAME,
+      locale: 'en_US',
+      type: 'website',
+      images: [{ url: OG_IMAGE, width: OG_IMAGE_W, height: OG_IMAGE_H, alt: title || SITE_NAME }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      ...(description ? { description } : {}),
+      images: [OG_IMAGE],
+    },
   };
 }
