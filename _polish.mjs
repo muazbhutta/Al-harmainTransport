@@ -440,7 +440,7 @@ export function markCurrent(html, route) {
 export function addGuideIcon(html) {
   return html.replace(/<button class="navbar-toggler"/,
     '<a class="nav-guide-btn d-lg-none" href="/ziyarat-guide" aria-label="Ziyarat Guide" title="Ziyarat Guide">'
-    + '<i class="fas fa-book" aria-hidden="true"></i></a>'
+    + '<i class="fas fa-book-open" aria-hidden="true"></i></a>'
     + '<button class="navbar-toggler"');
 }
 
