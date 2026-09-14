@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { contentDir } from '../lib/polish';
+import ChromeScripts from './ChromeScripts';
 import { pageUrl, waLink } from '../lib/whatsapp.mjs';
 
 type Chrome = { nav: string; footer: string; floating: string };
@@ -27,7 +28,13 @@ const forPage = (html: string, route: string) =>
 
 export async function SiteNav({ route }: { route: string }) {
   const { nav } = await chrome();
-  return <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: forPage(nav, route) }} />;
+  return (
+    <>
+      <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: forPage(nav, route) }} />
+      {/* the markup alone is inert: the menu button and the dropdowns are Bootstrap's */}
+      <ChromeScripts />
+    </>
+  );
 }
 
 export async function SiteFooter({ route }: { route: string }) {
