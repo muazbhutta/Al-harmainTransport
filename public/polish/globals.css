@@ -347,6 +347,14 @@ nav.navbar-custom .dropdown-item[aria-current="page"] { color: var(--clr-accent)
   nav.navbar-custom .navbar-nav .btn-success { width: 100%; height: 44px; justify-content: center; }
 }
 
+/* -------------------------------------------------------- vehicle categories
+   The card fills its column. dynamic_styles.css makes each column a flex
+   container (.content-section .row.g-4 > [class*="col-"]) so the four cards
+   match heights; the card asks for height: 100% but never a width, so as a
+   flex item it shrank to fit its own title. The four came out 216, 247, 162
+   and 159px wide — at every width, phone and desktop alike. */
+.vehicle-cat-card { width: 100%; }
+
 /* ---------------------------------------------- phone header height (last)
    On phones the header is 65px, not 72px. This has to come after the :root
    block in the heroes section, or that later declaration wins. */

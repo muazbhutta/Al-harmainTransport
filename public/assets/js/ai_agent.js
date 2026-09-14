@@ -433,7 +433,7 @@
                     I am your 24/7 AI Transport Assistant! How can I assist your holy journey today?
                     <div class="ai-suggestions mt-2">
                         <span class="ai-chip" data-query="Book Umrah Transport"><i class="fas fa-kaaba"></i> Book Taxi</span>
-                        <span class="ai-chip" data-query="Makkah to Madinah Rates"><i class="fas fa-route"></i> Makkah ↔ Madinah</span>
+                        <span class="ai-chip" data-query="Makkah to Madinah transport"><i class="fas fa-route"></i> Makkah ↔ Madinah</span>
                         <span class="ai-chip" data-query="Jeddah Airport Pick & Drop"><i class="fas fa-plane-arrival"></i> Airport Pickup</span>
                         <span class="ai-chip" data-query="Available Vehicles & Fleet"><i class="fas fa-car-side"></i> Vehicle Fleet</span>
                         <span class="ai-chip" data-query="WhatsApp Contact Number"><i class="fab fa-whatsapp"></i> WhatsApp Support</span>
@@ -545,16 +545,16 @@
         if (q.includes('hi') || q.includes('hello') || q.includes('salam') || q.includes('assalam') || q.includes('hey') || q.includes('namaste')) {
             return `
                 Walaikum Assalam! 🕋 Welcome to <strong>Al Harmain Umrah Transport</strong>.<br>
-                How can I assist your transport planning in Saudi Arabia today? You can ask me about rates, vehicles, routes, or instant bookings!
+                How can I assist your transport planning in Saudi Arabia today? You can ask me about vehicles, routes, or instant bookings!
                 <div class="ai-suggestions mt-2">
-                    <span class="ai-chip" data-query="Makkah to Madinah Rates">Makkah ↔ Madinah</span>
+                    <span class="ai-chip" data-query="Makkah to Madinah transport">Makkah ↔ Madinah</span>
                     <span class="ai-chip" data-query="Jeddah Airport Pick & Drop">Jeddah Airport</span>
                     <span class="ai-chip" data-query="Book on WhatsApp">Book via WhatsApp</span>
                 </div>
             `;
         }
 
-        // 2. Booking / How to Book / Rate request in Urdu/Roman Urdu or English
+        // 2. Booking / How to Book, in Urdu/Roman Urdu or English
         if (q.includes('book') || q.includes('booking') || q.includes('chahiay') || q.includes('chahiye') || q.includes('kiraya') || q.includes('karana')) {
             return `
                 🚗 <strong>Instant Booking Process:</strong><br>
@@ -573,10 +573,10 @@
             return `
                 🕌 <strong>Makkah ↔ Madinah Intercity Transport:</strong><br>
                 We provide private executive transfer between Makkah and Madinah in brand-new luxury vehicles:<br>
-                • <strong>Toyota Camry / Sonata:</strong> 280 - 310 SAR<br>
-                • <strong>Hyundai Staria (7 Seater):</strong> 340 - 390 SAR<br>
-                • <strong>GMC Yukon XL (VIP SUV):</strong> 560 SAR<br>
-                • <strong>Hiace Van (10-13 Seater):</strong> 395 - 560 SAR<br><br>
+                • <strong>Toyota Camry / Sonata</strong> — up to 4 passengers<br>
+                • <strong>Hyundai Staria</strong> — up to 7 passengers<br>
+                • <strong>GMC Yukon XL</strong> — VIP executive SUV<br>
+                • <strong>Hiace Van</strong> — 10 to 13 passengers<br><br>
                 Includes doorstep hotel pickup, luggage support, and professional multilingual driver.
                 <br><a href="https://wa.me/966565476113?text=I%20want%20to%20book%20Makkah%20to%20Madinah%20transport" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Reserve Makkah to Madinah Taxi</a>
             `;
@@ -587,8 +587,8 @@
             return `
                 ✈️ <strong>Jeddah Airport (KAIA) Pick & Drop Service:</strong><br>
                 We track your flight arrival to ensure your driver is waiting at the arrival terminal with a name sign.<br>
-                • <strong>Jeddah Airport to Makkah Hotel:</strong> Sedan from 200 SAR | GMC Yukon from 400 SAR<br>
-                • <strong>Jeddah Airport to Madinah Hotel:</strong> Sedan from 450 SAR | GMC Yukon from 750 SAR<br><br>
+                • <strong>Jeddah Airport to your Makkah hotel</strong><br>
+                • <strong>Jeddah Airport to your Madinah hotel</strong><br><br>
                 Available 24 Hours a day, 7 days a week.
                 <br><a href="https://wa.me/966565476113?text=I%20need%20Jeddah%20Airport%20Pickup" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Book Airport Pickup</a>
             `;
@@ -636,12 +636,24 @@
             `;
         }
 
-        // 8. Urdu / Roman Urdu queries (Rates, Kitne, Kahan, etc.)
-        if (q.includes('kitne') || q.includes('kitna') || q.includes('rate') || q.includes('paise') || q.includes('shukriya') || q.includes('kaise')) {
+        // 8. Fares. The team quotes these on WhatsApp, never the bot: a figure
+        // baked into a script goes stale, and a guest who was quoted one here
+        // and charged another has been misled.
+        if (q.includes('rate') || q.includes('price') || q.includes('fare') || q.includes('cost') || q.includes('how much')) {
+            return `
+                💬 <strong>Fares:</strong><br>
+                Your fare depends on the route, the vehicle and the travel date, so our team confirms it for you directly — usually within a few minutes.<br><br>
+                Send us your pick-up, your drop-off and your date, and we will send the exact fare back on WhatsApp.
+                <br><a href="https://wa.me/966565476113?text=Assalamu%20Alaikum%2C%20I%20would%20like%20a%20fare%20for%20my%20journey." target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> Get a Fare on WhatsApp</a>
+            `;
+        }
+
+        // 9. Urdu / Roman Urdu queries (Kitne, Kahan, etc.)
+        if (q.includes('kitne') || q.includes('kitna') || q.includes('paise') || q.includes('shukriya') || q.includes('kaise')) {
             return `
                 Aap Al Harmain Umrah Transport ki kisi bhi gaddi (Camry, Yukon SUV, Hiace ya Bus) ki booking WhatsApp par 2 minute mein kar saktay hain.<br><br>
-                • <strong>Makkah se Madinah:</strong> 280 SAR se shuru<br>
-                • <strong>Jeddah Airport Pickup:</strong> 200 SAR se shuru<br>
+                • <strong>Makkah se Madinah</strong><br>
+                • <strong>Jeddah Airport Pickup</strong><br>
                 • <strong>Ziyarat Package:</strong> Full custom tour available<br><br>
                 Abhi WhatsApp par rabta karein:
                 <br><a href="https://wa.me/966565476113?text=Salam!%20Mujhe%20transport%20booking%20ki%20details%20chahiye" target="_blank" class="ai-bot-link"><i class="fab fa-whatsapp me-1"></i> WhatsApp Par Baat Karein</a>
@@ -653,7 +665,7 @@
             Thank you for asking! 🕋 <strong>AL HARMAIN UMRAH TRANSPORT</strong> provides luxury private taxis across Saudi Arabia (Makkah, Madinah, Jeddah & Taif).<br><br>
             Would you like to check:
             <div class="ai-suggestions mt-2">
-                <span class="ai-chip" data-query="Makkah to Madinah Rates">Makkah ↔ Madinah Rates</span>
+                <span class="ai-chip" data-query="Makkah to Madinah transport">Makkah ↔ Madinah</span>
                 <span class="ai-chip" data-query="Jeddah Airport Pick & Drop">Jeddah Airport Transfer</span>
                 <span class="ai-chip" data-query="Available Vehicles & Fleet">Vehicle Fleet</span>
                 <span class="ai-chip" data-query="WhatsApp Contact Number">Direct WhatsApp Support</span>

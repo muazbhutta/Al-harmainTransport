@@ -444,6 +444,27 @@ export function addGuideIcon(html) {
     + '<button class="navbar-toggler"');
 }
 
+/**
+ * Vehicle Categories: give the four cards a width on phones.
+ *
+ * Their wrappers are `col-md-6 col-lg-3` with no base class. Bootstrap only
+ * defines a width from the named breakpoint up, so below 768px these divs have
+ * no width rule at all and, as flex children of .row, shrink to fit their own
+ * titles: the four cards came out 215, 246, 161 and 158px wide in a 390px
+ * viewport, wrapping into a ragged two-and-two.
+ *
+ * Adding the base col-12 is what the markup meant to say. Only wrappers that
+ * have no base width are touched, and only the ones holding a category card.
+ */
+export function categoryGrid(html) {
+  // A base width, not a breakpoint one: col-12 is what the markup meant.
+  const hasBase = /\bcol(-(\d+|auto))?(\s|$)/;
+  return html.replace(
+    /<div class="([^"]*)">(\s*<a href="[^"]*" class="vehicle-cat-card">)/g,
+    (m, cls, rest) => (hasBase.test(cls) ? m : `<div class="col-12 ${cls.trim()}">${rest}`),
+  );
+}
+
 /* ------------------------------------------------------- garbled characters */
 
 /**
@@ -605,6 +626,7 @@ const CHAT_LINK = {
   'I want to book Makkah to Madinah transport': { type: 'route', extra: { from: 'Makkah', to: 'Madinah' } },
   'I need Jeddah Airport Pickup': { type: 'service', name: 'a Jeddah Airport pickup' },
   'I want to book a Ziyarat Tour': { type: 'service', name: 'a Ziyarat tour' },
+  'Assalamu Alaikum, I would like a fare for my journey.': { type: 'quote' },
 };
 
 /**
@@ -697,7 +719,7 @@ async function main() {
       }
       data.body = addGuideIcon(fixLogo(markCurrent(transformHtml(fixMojibake(data.body, data.route), data.route), data.route)));
       data.body = vehicleButton(whatsappIn(data.body, data.route), data.route);
-      if (data.route === '/') data.body = heroEdits(data.body);
+      if (data.route === '/') data.body = heroEdits(categoryGrid(data.body));
     }
     await write(join('content-polish', f), JSON.stringify(data));
   }

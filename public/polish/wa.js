@@ -81,6 +81,11 @@ function waMessage({ type = 'general', name = '', extra = {}, url = '' } = {}) {
         : `I would like to book:\n${rows.map(([k, v]) => `${k}: ${v}`).join('\n')}`;
       break;
     }
+    case 'quote':
+      // A fare enquiry. The site quotes no figures — fares move with route,
+      // vehicle and date — so the guest is handed straight to the team.
+      body = 'I would like a fare for my journey.';
+      break;
     case 'b2b':
       body = 'I am a travel agent and would like your B2B transport rates.';
       break;
