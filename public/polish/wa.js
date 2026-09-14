@@ -19,6 +19,9 @@
  */
 
 /** The company's own address. The export carried two others, both dead. */
+/** The operating licence number, as issued. */
+const LICENCE = '35/00002303';
+
 const EMAIL = 'info@alharmainumrahtransport.com';
 
 const WHATSAPP_NUMBER = '966565476113';

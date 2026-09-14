@@ -3,7 +3,7 @@ import JsonLd from '../../components/JsonLd';
 import type { CSSProperties } from 'react';
 
 import { SiteNav, SiteFooter } from '../../components/SiteChrome';
-import { waLink, pageUrl, EMAIL } from '../../lib/whatsapp.mjs';
+import { waLink, pageUrl, EMAIL, LICENCE } from '../../lib/whatsapp.mjs';
 import { SITE_URL } from '../sitemap';
 
 /**
@@ -67,6 +67,11 @@ export default function ContactPage() {
             <p style={{ maxWidth: '46rem', marginInline: 'auto' }}>
               We answer on WhatsApp around the clock. Tell us your route and your date,
               and we will confirm the vehicle and the fare.
+            </p>
+            {/* A licensed operator, with the number to check it against. */}
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--clr-muted)', marginTop: '1rem' }}>
+              Operating licence{' '}
+              <span dir="ltr" style={{ color: 'var(--clr-heading)' }}>{LICENCE}</span>
             </p>
           </div>
         </section>

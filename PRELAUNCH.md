@@ -54,7 +54,7 @@ WhatsApp share, and without Open Graph a shared link unfurls as a bare grey box.
 
 | schema | pages | source |
 |---|---|---|
-| LocalBusiness | 71 | footer facts only — no licence number, rating or price range, because the site publishes none |
+| LocalBusiness | 72 | footer facts and the operating licence number — no rating or price range, because the site publishes none |
 | BreadcrumbList | 46 | the route's own segments |
 | Article | 11 | guide pages |
 | FAQPage | 1 | the FAQ page's own 9 visible Q&As |
@@ -63,6 +63,15 @@ WhatsApp share, and without Open Graph a shared link unfurls as a bare grey box.
 FAQ markup is lifted from the visible accordion text, so the structured data and
 the page cannot disagree — which is what Google requires and what gets sites
 penalised when done any other way.
+
+
+### Operating licence
+
+The site claimed to be "Licensed & Insured" but never showed the number. The
+owner supplied it — **35/00002303** — and it now appears in the footer's
+"Get in Touch" column on all 72 pages, on the contact page, and as an
+`identifier` on the LocalBusiness schema. It comes from one constant in
+`lib/whatsapp.mjs`, beside the phone number and the address.
 
 ### Other fixes
 

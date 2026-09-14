@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { POLISH, polished } from '../lib/polish';
 import { SITE_URL } from './sitemap';
-import { EMAIL } from '../lib/whatsapp.mjs';
+import { EMAIL, LICENCE } from '../lib/whatsapp.mjs';
 import JsonLd from '../components/JsonLd';
 
 /**
@@ -35,6 +35,11 @@ const BUSINESS = {
   telephone: '+966565476113',
   email: EMAIL,
   address: { '@type': 'PostalAddress', addressCountry: 'SA' },
+  identifier: {
+    '@type': 'PropertyValue',
+    propertyID: 'Operating licence',
+    value: LICENCE,
+  },
   areaServed: ['Makkah', 'Madinah', 'Jeddah', 'Taif'].map((name) => ({ '@type': 'City', name })),
   sameAs: ['https://www.facebook.com/ALHARMAINUMRAHTAXI'],
   openingHoursSpecification: {

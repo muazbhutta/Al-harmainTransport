@@ -19,7 +19,7 @@
  */
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, posix, relative, sep } from 'node:path';
-import { EMAIL, pageUrl, waLink, waMessage } from './lib/whatsapp.mjs';
+import { EMAIL, LICENCE, pageUrl, waLink, waMessage } from './lib/whatsapp.mjs';
 
 /* ------------------------------------------------------------- palette */
 
@@ -808,6 +808,25 @@ export function emailIn(text) {
   return text;
 }
 
+/* ---------------------------------------------------------------- licence */
+
+/**
+ * The operating licence, in the footer of every page.
+ *
+ * The site claims to be "Licensed & Insured" but never showed the number. For
+ * a Saudi transport operator that number is the thing a careful guest checks
+ * before handing over a family's travel, so it belongs where the other contact
+ * details already are — the footer's "Get in Touch" column — and not buried.
+ */
+export function licenceIn(html) {
+  const item = `<li><i class="fas fa-id-card"></i> Licence: <span dir="ltr">${LICENCE}</span></li>`;
+  // after the email, the last item in that column
+  return html.replace(
+    /(<li><i class="fas fa-envelope"><\/i><a href="mailto:[^<]*<\/a><\/li>)/,
+    (m) => m + item,
+  );
+}
+
 /* -------------------------------------------------------- image dimensions */
 
 /**
@@ -1002,7 +1021,7 @@ async function main() {
       data.nav = addGuideIcon(fixLogo(markCurrent(data.nav, '/ziyarat-guide'))); // the chrome is only used by the guide
       // WhatsApp links are marked data-wa; SiteChrome re-points them at each guide page
       for (const k of Object.keys(data)) data[k] = whatsappIn(data[k], '/ziyarat-guide');
-      for (const k of Object.keys(data)) data[k] = emailIn(deadLinks(addImageDims(data[k])));
+      for (const k of Object.keys(data)) data[k] = licenceIn(emailIn(deadLinks(addImageDims(data[k]))));
       collectChromeText(data);
     } else if (typeof data.body === 'string') {
       // metadata is plain text: repair it, and undo the one extra level of
@@ -1016,7 +1035,7 @@ async function main() {
       if (data.route === '/who-we-are') data.body = fleetPhotos(data.body);
       if (data.route === '/book-now') data.body = bookNowHeading(data.body);
       if (data.route === '/customer-faqs') data.faq = extractFaq(data.body);
-      data.body = emailIn(deadLinks(addImageDims(data.body)));
+      data.body = licenceIn(emailIn(deadLinks(addImageDims(data.body))));
       seoMeta(data);   // a title and description of its own, from the page's own words
     }
     await write(join('content-polish', f), JSON.stringify(data));
