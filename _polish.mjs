@@ -465,6 +465,50 @@ export function categoryGrid(html) {
   );
 }
 
+/**
+ * "Vehicles Suited for Every Group Size" shows the vehicle, not a generic icon.
+ *
+ * Every card carried a Font Awesome glyph, and the same van glyph stood for
+ * both the Staria and the Hiace. The site already ships a photograph of each
+ * vehicle — the one that vehicle's own page leads with — so the card uses it.
+ *
+ * The VIP 50-seater keeps its icon: there is no photograph of one anywhere in
+ * the project. The three files the fleet gallery labels "VIP Bus" are each a
+ * picture of a Hiace, and a van shown under "VIP Bus (50-Seater)" would
+ * misdescribe what the guest is booking.
+ */
+const FLEET_PHOTO = {
+  'Toyota Camry': '/uploads/vehicles/1752554098_camry2025-2.png',
+  'Hyundai Sonata': '/uploads/vehicles/1752554133_sonata2025-2.png',
+  'GMC Yukon XL': '/uploads/vehicles/1752554276_gmc2025-2.png',
+  'Hyundai Staria': '/uploads/vehicles/1752554248_hyundaistaria2025-2.png',
+  'Toyota Hiace': '/uploads/vehicles/1752554415_Hiace 2025-2.png',
+  'Coaster Minibus': '/uploads/vehicles/1752554405_Coaster2025-2.png',
+};
+
+export const fleetPhotoLog = [];
+
+export function fleetPhotos(html) {
+  return html.replace(
+    /(<i class="fas fa-[a-z-]+"[^>]*><\/i>)(\s*)<h5([^>]*)>([^<]+)<\/h5>/g,
+    (m, icon, gap, attrs, name) => {
+      const key = name.trim();
+      const known = key in FLEET_PHOTO;
+      if (!known && !key.startsWith('VIP Bus')) return m;   // not a fleet card
+      const heading = `<h5${attrs}>${name}</h5>`;
+      if (!known) {
+        fleetPhotoLog.push(`${key}: no photograph in the project, icon kept`);
+        // the icon keeps a photo-sized box, so the cards stay aligned
+        return `<span class="fleet-photo fleet-photo--none">${icon}</span>${gap}${heading}`;
+      }
+      const src = FLEET_PHOTO[key];
+      fleetPhotoLog.push(`${key}: ${src.split('/').pop()}`);
+      return `<img class="fleet-photo" src="${encodeURI(src)}" alt="${key}"`
+        + ` width="200" height="100" loading="lazy" decoding="async">${gap}${heading}`;
+    },
+  );
+}
+
 /* ------------------------------------------------------- garbled characters */
 
 /**
@@ -720,6 +764,7 @@ async function main() {
       data.body = addGuideIcon(fixLogo(markCurrent(transformHtml(fixMojibake(data.body, data.route), data.route), data.route)));
       data.body = vehicleButton(whatsappIn(data.body, data.route), data.route);
       if (data.route === '/') data.body = heroEdits(categoryGrid(data.body));
+      if (data.route === '/who-we-are') data.body = fleetPhotos(data.body);
     }
     await write(join('content-polish', f), JSON.stringify(data));
   }

@@ -355,6 +355,24 @@ nav.navbar-custom .dropdown-item[aria-current="page"] { color: var(--clr-accent)
    and 159px wide — at every width, phone and desktop alike. */
 .vehicle-cat-card { width: 100%; }
 
+/* ------------------------------------------------------------- fleet cards
+   "Vehicles Suited for Every Group Size" on /who-we-are. One box height for
+   the photo and for the one card that still carries an icon, so a row of
+   cards stays aligned whatever is inside it. */
+.fleet-photo {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: 88px;
+  object-fit: contain;
+  margin: 0 auto 10px;
+}
+.fleet-photo--none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ---------------------------------------------- phone header height (last)
    On phones the header is 65px, not 72px. This has to come after the :root
    block in the heroes section, or that later declaration wins. */
